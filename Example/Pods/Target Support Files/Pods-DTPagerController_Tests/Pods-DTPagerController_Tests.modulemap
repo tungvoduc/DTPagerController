@@ -1,0 +1,6 @@
+framework module Pods_DTPagerController_Tests {
+  umbrella header "Pods-DTPagerController_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

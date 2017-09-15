@@ -1,0 +1,6 @@
+framework module DTPagerController {
+  umbrella header "DTPagerController-umbrella.h"
+
+  export *
+  module * { export * }
+}

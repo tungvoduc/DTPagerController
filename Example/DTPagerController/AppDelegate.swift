@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DTPagerController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let viewController1 = ViewController()
+        viewController1.title = "Test 1"
+        viewController1.scrollView.backgroundColor = UIColor.green
+        
+        let viewController2 = ViewController()
+        viewController2.title = "Test 2"
+        viewController2.scrollView.backgroundColor = UIColor.purple
+        
+        let pagerController = DTPagerController(viewControllers: [viewController1, viewController2])
+        pagerController.title = "DTPagerController"
+        let navigationController = UINavigationController(rootViewController: pagerController)
+        navigationController.navigationBar.isTranslucent = false
+        
+        let tabbarController = UITabBarController()
+        tabbarController.viewControllers = [navigationController]
+        
+        window?.rootViewController = tabbarController
+        window?.makeKeyAndVisible()
+        
         return true
     }
 
