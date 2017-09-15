@@ -10,8 +10,9 @@ import Foundation
 
 /// PagerViewControllerDelegate
 @objc public protocol DTPagerControllerDelegate: NSObjectProtocol {
-    @objc optional func pagerControllerSelectedIndexDidChange(_ pagerController: DTPagerController, selectedIndex: Int)
-    @objc optional func pagerControllerSelectedIndexWillChange(_ pagerController: DTPagerController, oldSelectedIndex: Int, newSelectedIndex: Int)
+    @objc optional func pagerController(_ pagerController: DTPagerController, didChangeSelectedPageIndex index: Int)
+    @objc optional func pagerController(_ pagerController: DTPagerController, willChangeSelectedPageIndex index: Int, fromPageIndex oldIndex: Int)
+    @objc optional func pagerController(_ pagerController: DTPagerController, scrollViewdidScroll: UIScrollView)
 }
 
 
@@ -21,10 +22,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// scrollIndicator below the segmented control bar.
     /// Default background color is blue.
-    lazy var scrollIndicator: UIView = {
+    open fileprivate(set) lazy var scrollIndicator: UIView = {
         let bar = UIView()
         bar.backgroundColor = UIColor.blue
-        self.view.addSubview(bar)
         return bar
     }()
     
@@ -34,32 +34,33 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Preferred height of segmented control bar.
     /// Default value is 44.
     /// If viewControllers has less than 2 items, actual height is 0.
-    open var preferredSegmentedBarHeight: CGFloat = 44 {
+    open var preferredSegmentedControlHeight: CGFloat = 44 {
         didSet {
-            
+            view.setNeedsLayout()
         }
     }
     
     /// Height of segmented control bar
     /// Get only
-    open var segmentedBarHeight: CGFloat {
-        return viewControllers.count <= 1 ? 0 : preferredSegmentedBarHeight
+    open var segmentedControlHeight: CGFloat {
+        return viewControllers.count <= 1 ? 0 : preferredSegmentedControlHeight
     }
     
-    /// Preferred of segmented indicator.
-    /// Default value is 1.
+    /// Preferred of scroll indicator.
+    /// Default value is 2.
     /// If viewControllers has less than 2 items, actual height is 0.
-    open var perferredSegmentedIndicatorHeight: CGFloat = 2 {
+    open var perferredScrollIndicatorHeight: CGFloat = 2 {
         didSet {
-            // Update height
-            scrollIndicator.bounds.size.height = segmentedIndicatorHeight
+            // Update height and vertical position
+            scrollIndicator.bounds.size.height = scrollIndicatorHeight
+            scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
         }
     }
     
     /// Height of segmented indicator
     /// Get only
-    open var segmentedIndicatorHeight: CGFloat {
-        return viewControllers.count <= 1 ? 0 : perferredSegmentedIndicatorHeight
+    open var scrollIndicatorHeight: CGFloat {
+        return viewControllers.count <= 1 ? 0 : perferredScrollIndicatorHeight
     }
     
     var previousPageIndex : Int = 0
@@ -102,7 +103,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// Normal text color in segmented control bar
     /// Default value is UIColor.lightGray
-    public var segmentedTextColor: UIColor = UIColor.lightGray {
+    public var textColor: UIColor = UIColor.lightGray {
         didSet {
             if viewIfLoaded != nil {
                 updateSegmentedNormalTitleTextAttributes()
@@ -112,7 +113,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// Selected text color in segmented control bar
     /// Default value is UIColor.black
-    public var selectedSegmentedTextColor: UIColor = UIColor.blue {
+    public var selectedTextColor: UIColor = UIColor.blue {
         didSet {
             if viewIfLoaded != nil {
                 updateSegmentedSelectedTitleTextAttributes()
@@ -122,7 +123,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// Normal text color in segmented control bar
     /// Default value is UIColor.lightGray
-    public var segmentedFont: UIFont = UIFont.systemFont(ofSize: UIFont.systemFontSize) {
+    public var font: UIFont = UIFont.systemFont(ofSize: UIFont.systemFontSize) {
         didSet {
             if viewIfLoaded != nil {
                 updateSegmentedNormalTitleTextAttributes()
@@ -132,7 +133,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// Selected text color in segmented control bar
     /// Default value is UIColor.black
-    public var selectedSegmentedFont: UIFont = UIFont.boldSystemFont(ofSize: UIFont.systemFontSize) {
+    public var selectedFont: UIFont = UIFont.boldSystemFont(ofSize: UIFont.systemFontSize) {
         didSet {
             if viewIfLoaded != nil {
                 updateSegmentedSelectedTitleTextAttributes()
@@ -144,7 +145,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     open var pageSegmentedControl: DTSegmentedControl!
     
     /// Page scroll view
-    open fileprivate(set) var pageScrollView : UIScrollView!
+    /// This should not be exposed. Changing behavior of pageScrollView will destroy functionality of DTPagerController
+     var pageScrollView : UIScrollView!
     
     /// Initializer with array of view controllers to be displayed in pager.
     /// Title of each view controller will be used to display in each tab of segmented control.
@@ -217,15 +219,15 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         super.viewDidLayoutSubviews()
         
         // Update segmented control frame
-        pageSegmentedControl.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: segmentedBarHeight)
+        pageSegmentedControl.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: segmentedControlHeight)
         
         // Update child view controllers' view frame
         for (index, viewController) in viewControllers.enumerated() {
-            viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedBarHeight)
+            viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
         }
         
         // Update scroll indicator's vertical position
-        scrollIndicator.frame.origin.y = segmentedBarHeight - segmentedIndicatorHeight
+        scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -235,7 +237,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     //MARK: Segmented control action
     func pageSegmentedControlValueChanged() {
         //Call delegate method before changing value
-        delegate?.pagerControllerSelectedIndexWillChange?(self, oldSelectedIndex: previousPageIndex, newSelectedIndex: selectedPageIndex)
+        delegate?.pagerController?(self, willChangeSelectedPageIndex: selectedPageIndex, fromPageIndex: previousPageIndex)
         
         let oldViewController = viewControllers[previousPageIndex]
         let newViewController = viewControllers[selectedPageIndex]
@@ -275,7 +277,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             }
             
             //Call delegate method after changing value
-            self.delegate?.pagerControllerSelectedIndexDidChange?(self, selectedIndex: self.selectedPageIndex)
+            self.delegate?.pagerController?(self, didChangeSelectedPageIndex: self.selectedPageIndex)
         })
         
         //Setting up new previousPageIndex for next change
@@ -284,9 +286,12 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     //MARK: UIScrollViewDelegate's method
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //Update bar position
+        // Delegate
+        delegate?.pagerController?(self, scrollViewdidScroll: scrollView)
+        
+        // Update bar position
         scrollIndicator.frame.origin.x = scrollView.contentOffset.x/scrollView.contentSize.width * scrollView.frame.size.width
-        //When content offset changes, check if it is closer to the next page
+        // When content offset changes, check if it is closer to the next page
         var index: Int = 0
         if scrollView.contentOffset.x == 0 && scrollView.frame.size.width == 0 {
             index = 0
@@ -328,13 +333,13 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
 
 extension DTPagerController {
     func updateSegmentedNormalTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : segmentedFont, NSForegroundColorAttributeName : segmentedTextColor], for: .normal)
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : segmentedFont, NSForegroundColorAttributeName : segmentedTextColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : font, NSForegroundColorAttributeName : textColor], for: .normal)
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : font, NSForegroundColorAttributeName : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
     }
     
     func updateSegmentedSelectedTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedSegmentedFont, NSForegroundColorAttributeName : selectedSegmentedTextColor], for: .selected)
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedSegmentedFont, NSForegroundColorAttributeName : selectedSegmentedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedFont, NSForegroundColorAttributeName : selectedTextColor], for: .selected)
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedFont, NSForegroundColorAttributeName : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
     }
     
     func updateSegmentedTitleTextAttributes() {
@@ -366,14 +371,15 @@ extension DTPagerController {
         pageScrollView.scrollsToTop = false
         pageScrollView.alwaysBounceVertical = false
         pageScrollView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
-        pageScrollView.frame = CGRect(x: 0, y: segmentedBarHeight, width: size.width, height: size.height - segmentedBarHeight)
+        pageScrollView.frame = CGRect(x: 0, y: segmentedControlHeight, width: size.width, height: size.height - segmentedControlHeight)
         
         view.addSubview(pageScrollView)
     }
     
     func setUpScrollIndicator() {
-        scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: segmentedIndicatorHeight)
+        scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
         scrollIndicator.frame.origin.x = 0
+        view.addSubview(scrollIndicator)
     }
 }
 
