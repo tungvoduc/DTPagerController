@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DTPagerController'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'A customizable control for pager of view controllers.'
 
 # This description is used to generate tags and improve search results.
