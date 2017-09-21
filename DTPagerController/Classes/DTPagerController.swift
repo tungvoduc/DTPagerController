@@ -73,30 +73,24 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// View controllers in Pager View Controller
     /// Get only.
-    open fileprivate(set) var viewControllers: [UIViewController]!
+    open var viewControllers: [UIViewController] {
+        didSet {
+            removeChildViewControllers(oldValue)
+            setUpViewControllers()
+        }
+    }
     
     /// Current index of pager
     /// Setting selectedPageIndex before viewDidLoad is called will not have any effect
     open var selectedPageIndex : Int {
         set {
-            // Prevent calling it before viewDidLoad is called
-            if pageSegmentedControl == nil {
-                return
-            }
-            
             if newValue != previousPageIndex {
                 pageSegmentedControl.selectedSegmentIndex = newValue
                 pageSegmentedControl.sendActions(for: UIControlEvents.valueChanged)
             }
         }
         
-        get {
-            // Prevent calling it before viewDidLoad is called
-            if pageSegmentedControl == nil {
-                return 0
-            }
-            
-            //pageSegmentedControl.selectedSegmentIndex can sometimes return -1, so return 0 instead
+        get {//pageSegmentedControl.selectedSegmentIndex can sometimes return -1, so return 0 instead
             return pageSegmentedControl.selectedSegmentIndex < 0 ? 0 : pageSegmentedControl.selectedSegmentIndex
         }
     }
@@ -142,21 +136,34 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
     
     /// Page segmented control
-    open var pageSegmentedControl: DTSegmentedControl!
+    open lazy var pageSegmentedControl: DTSegmentedControl = {
+        let pageControl = DTSegmentedControl(items: [])
+        pageControl.clipsToBounds = false
+        pageControl.layer.masksToBounds = false
+        return pageControl
+    }()
     
     /// Page scroll view
     /// This should not be exposed. Changing behavior of pageScrollView will destroy functionality of DTPagerController
-     var pageScrollView : UIScrollView!
+    lazy var pageScrollView : UIScrollView = {
+        let pageScrollView = UIScrollView()
+        pageScrollView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
+        pageScrollView.showsHorizontalScrollIndicator = false
+        
+        pageScrollView.delegate = self
+        pageScrollView.isPagingEnabled = true
+        pageScrollView.scrollsToTop = false
+        pageScrollView.alwaysBounceVertical = false
+        pageScrollView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
+        return pageScrollView
+    }()
     
     /// Initializer with array of view controllers to be displayed in pager.
     /// Title of each view controller will be used to display in each tab of segmented control.
-    public init(viewControllers : [UIViewController]) {
-        if viewControllers.count == 0 {
-            fatalError("viewControllers cannot be empty")
-        }
+    public init(viewControllers controllers: [UIViewController]) {
+        viewControllers = controllers
         
         super.init(nibName: nil, bundle: nil)
-        self.viewControllers = viewControllers
         
         // Observe title of each view controller to update segmented control
         for viewController in viewControllers {
@@ -165,7 +172,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        viewControllers = []
+        super.init(coder: aDecoder)
     }
     
     deinit {
@@ -184,35 +192,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         
-        // Setup page scroll view
-        setUpPageScrollView()
+        setUpViewControllers()
         
-        // Page segmented control
-        var titles = [String]()
-        
-        for (_, viewController) in viewControllers.enumerated() {
-            titles.append(viewController.title ?? "")
-        }
-        setUpSegmentedControl(titles: titles)
-        
-        
-        // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
-        for (index, viewController) in viewControllers.enumerated() {
-            // Add first view controller to controller hierachy
-            if index == 0 {
-                viewController.willMove(toParentViewController: self)
-                addChildViewController(viewController)
-            }
-            
-            pageScrollView.addSubview(viewController.view)
-            
-            if index == 0 {
-                viewController.didMove(toParentViewController: self)
-            }
-        }
-        
-        // Scroll indicator
-        setUpScrollIndicator()
+        updateSegmentedTitleTextAttributes()
     }
     
     open override func viewDidLayoutSubviews() {
@@ -284,6 +266,59 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         previousPageIndex = selectedPageIndex
     }
     
+    // Remove all current child view controllers
+    private func removeChildViewControllers(_ childViewControllers: [UIViewController]) {
+        // Remove each child view controller and its view from parent view controller and its view hierachy
+        for viewController in childViewControllers {
+            if automaticallyHandleAppearanceTransitions {
+                viewController.beginAppearanceTransition(false, animated: false)
+            }
+            
+            viewController.willMove(toParentViewController: nil)
+            viewController.view.removeFromSuperview()
+            viewController.willMove(toParentViewController: nil)
+            
+            if automaticallyHandleAppearanceTransitions {
+                viewController.endAppearanceTransition()
+            }
+        }
+    }
+    
+    // Setup new child view controllers
+    // Called in viewDidLoad or each time a new array of viewControllers is set
+    private func setUpViewControllers() {
+        // Setup page scroll view
+        setUpPageScrollView()
+        
+        // Page segmented control
+        var titles = [String]()
+        
+        for (_, viewController) in viewControllers.enumerated() {
+            titles.append(viewController.title ?? "")
+        }
+        
+        setUpSegmentedControl(titles: titles)
+        
+        
+        // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
+        for (index, viewController) in viewControllers.enumerated() {
+            // Add first view controller to controller hierachy
+            if index == 0 {
+                viewController.willMove(toParentViewController: self)
+                addChildViewController(viewController)
+            }
+            
+            pageScrollView.addSubview(viewController.view)
+            
+            if index == 0 {
+                viewController.didMove(toParentViewController: self)
+            }
+        }
+        
+        // Scroll indicator
+        setUpScrollIndicator()
+    }
+    
     //MARK: UIScrollViewDelegate's method
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Delegate
@@ -324,7 +359,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         if let viewController = object as? UIViewController {
             if keyPath == "title" {
                 if let index = viewControllers.index(of: viewController) {
-                    pageSegmentedControl?.setTitle(viewController.title, forSegmentAt: index)
+                    pageSegmentedControl.setTitle(viewController.title, forSegmentAt: index)
                 }
             }
         }
@@ -348,36 +383,30 @@ extension DTPagerController {
     }
     
     func setUpSegmentedControl(titles: [String]) {
-        pageSegmentedControl = DTSegmentedControl(items: titles)
+        pageSegmentedControl.removeAllSegments()
+        
+        for (index, title) in titles.enumerated() {
+            pageSegmentedControl.insertSegment(withTitle: title, at: index, animated: false)
+        }
+        
         pageSegmentedControl.selectedSegmentIndex = 0
-        pageSegmentedControl.clipsToBounds = false
-        pageSegmentedControl.layer.masksToBounds = false
         pageSegmentedControl.addTarget(self, action: #selector(pageSegmentedControlValueChanged), for: UIControlEvents.valueChanged)
         selectedPageIndex = previousPageIndex
         view.addSubview(pageSegmentedControl)
-        
-        updateSegmentedTitleTextAttributes()
     }
     
     func setUpPageScrollView() {
         let size = view.bounds.size
-        
-        pageScrollView = UIScrollView()
-        pageScrollView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
-        pageScrollView.showsHorizontalScrollIndicator = false
         pageScrollView.contentSize = CGSize(width: view.bounds.width * CGFloat(viewControllers.count), height: 0)
-        pageScrollView.delegate = self
-        pageScrollView.isPagingEnabled = true
-        pageScrollView.scrollsToTop = false
-        pageScrollView.alwaysBounceVertical = false
-        pageScrollView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
         pageScrollView.frame = CGRect(x: 0, y: segmentedControlHeight, width: size.width, height: size.height - segmentedControlHeight)
         
         view.addSubview(pageScrollView)
     }
     
     func setUpScrollIndicator() {
-        scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
+        if viewControllers.count > 0 {
+            scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
+        }
         scrollIndicator.frame.origin.x = 0
         view.addSubview(scrollIndicator)
     }
