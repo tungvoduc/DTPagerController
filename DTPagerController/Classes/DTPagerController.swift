@@ -250,7 +250,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         // Call these two methods to notify that two view controllers are being removed or added to container view controller (Check Documentation)
         if automaticallyHandleAppearanceTransitions {
             oldViewController.willMove(toParentViewController: nil)
-            newViewController.willMove(toParentViewController: newViewController)
+            newViewController.willMove(toParentViewController: self)
         }
         
         addChildViewController(newViewController)
