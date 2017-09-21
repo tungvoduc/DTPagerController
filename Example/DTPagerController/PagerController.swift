@@ -29,7 +29,7 @@ class PagerController: DTPagerController {
         viewController2.title = "Test 2"
         viewController2.scrollView.backgroundColor = UIColor.purple
         
-        // viewControllers = [viewController1, viewController2]
+        viewControllers = [viewController1, viewController2]
         // Do any additional setup after loading the view.
     }
 

@@ -153,8 +153,6 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         pageScrollView.delegate = self
         pageScrollView.isPagingEnabled = true
         pageScrollView.scrollsToTop = false
-        pageScrollView.alwaysBounceVertical = false
-        pageScrollView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
         return pageScrollView
     }()
     
