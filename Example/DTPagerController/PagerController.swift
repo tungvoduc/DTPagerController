@@ -7,12 +7,29 @@
 //
 
 import UIKit
+import DTPagerController
 
 class PagerController: DTPagerController {
-
+    init() {
+        super.init(viewControllers: [])
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let viewController1 = ViewController()
+        viewController1.title = "Test 1"
+        viewController1.scrollView.backgroundColor = UIColor.green
+        
+        let viewController2 = ViewController()
+        viewController2.title = "Test 2"
+        viewController2.scrollView.backgroundColor = UIColor.purple
+        
+        // viewControllers = [viewController1, viewController2]
         // Do any additional setup after loading the view.
     }
 
