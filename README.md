@@ -7,6 +7,9 @@
 
 This is a control for iOS written in Swift. DTPagerController is simple to use and easy to customize. 
 
+## Screenshot
+![Screenshot](Screenshot.PNG)
+
 ## Usage
 
 DTPagerController is extremely easy to use. In order to display two view controllers inside a pager controller. All you have to do is this many lines of code.
