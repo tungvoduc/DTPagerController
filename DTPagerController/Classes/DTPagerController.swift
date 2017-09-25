@@ -215,7 +215,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: Segmented control action
-    func pageSegmentedControlValueChanged() {
+    @objc func pageSegmentedControlValueChanged() {
         //Call delegate method before changing value
         delegate?.pagerController?(self, willChangeSelectedPageIndex: selectedPageIndex, fromPageIndex: previousPageIndex)
         
@@ -366,13 +366,13 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
 
 extension DTPagerController {
     func updateSegmentedNormalTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : font, NSForegroundColorAttributeName : textColor], for: .normal)
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : font, NSForegroundColorAttributeName : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor : textColor], for: .normal)
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
     }
     
     func updateSegmentedSelectedTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedFont, NSForegroundColorAttributeName : selectedTextColor], for: .selected)
-        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedFont, NSForegroundColorAttributeName : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : selectedFont, NSAttributedStringKey.foregroundColor : selectedTextColor], for: .selected)
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : selectedFont, NSAttributedStringKey.foregroundColor : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
     }
     
     func updateSegmentedTitleTextAttributes() {
