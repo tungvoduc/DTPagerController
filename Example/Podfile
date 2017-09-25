@@ -5,8 +5,5 @@ target 'DTPagerController_Example' do
 
   target 'DTPagerController_Tests' do
     inherit! :search_paths
-
-    pod 'Quick', '~> 1.0.0'
-  pod 'Nimble', '~> 7.0.1'
   end
 end
