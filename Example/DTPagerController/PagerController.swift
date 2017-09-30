@@ -22,14 +22,18 @@ class PagerController: DTPagerController {
         super.viewDidLoad()
 
         let viewController1 = ViewController()
-        viewController1.title = "Test 1"
+        viewController1.title = "VC 1"
         viewController1.scrollView.backgroundColor = UIColor.green
         
         let viewController2 = ViewController()
-        viewController2.title = "Test 2"
+        viewController2.title = "VC 2"
         viewController2.scrollView.backgroundColor = UIColor.purple
         
-        viewControllers = [viewController1, viewController2]
+        let viewController3 = ViewController()
+        viewController3.title = "VC 3"
+        viewController3.scrollView.backgroundColor = UIColor.red
+        
+        viewControllers = [viewController1, viewController2, viewController3]
         // Do any additional setup after loading the view.
     }
 
