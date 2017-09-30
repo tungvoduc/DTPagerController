@@ -230,10 +230,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         // Call these two methods to notify that two view controllers are being removed or added to container view controller (Check Documentation)
         if automaticallyHandleAppearanceTransitions {
             oldViewController.willMove(toParentViewController: nil)
-            newViewController.willMove(toParentViewController: self)
+            addChildViewController(newViewController)
         }
-        
-        addChildViewController(newViewController)
         
         let size = view.bounds.size
         let contentOffset = CGFloat(selectedPageIndex) * size.width
@@ -245,11 +243,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             self.setNeedsStatusBarAppearanceUpdate()
             
         }, completion: { (finished) -> Void in
-            //Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
-            oldViewController.removeFromParentViewController()
-            
+            // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
             if self.automaticallyHandleAppearanceTransitions {
-                oldViewController.didMove(toParentViewController: nil)
+                oldViewController.removeFromParentViewController()
                 newViewController.didMove(toParentViewController: self)
                 
                 oldViewController.endAppearanceTransition()
@@ -274,7 +270,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             
             viewController.willMove(toParentViewController: nil)
             viewController.view.removeFromSuperview()
-            viewController.willMove(toParentViewController: nil)
+            viewController.removeFromParentViewController()
             
             if automaticallyHandleAppearanceTransitions {
                 viewController.endAppearanceTransition()
@@ -301,20 +297,16 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         
         // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
         for (index, viewController) in viewControllers.enumerated() {
-            // Add first view controller to controller hierachy
-            // Also, only add first child view controller's view to view hierachy
-            if index == 0 {
-                viewController.willMove(toParentViewController: self)
-                addChildViewController(viewController)
-            }
-            
             // Add view controller's view if it must be visible in scroll view
             if let _ = indexes.index(of: index) {
+                // Add to call viewDidLoad if needed
                 viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
                 pageScrollView.addSubview(viewController.view)
-            }
-            
-            if index == 0 {
+                
+                // This will call viewWillAppear
+                addChildViewController(viewController)
+                
+                // This will call viewDidAppear
                 viewController.didMove(toParentViewController: self)
             }
         }
