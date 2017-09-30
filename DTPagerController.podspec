@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DTPagerController'
-  s.version          = '1.1.0'
+  s.version          = '1.1.1'
   s.summary          = 'A fully customizable container view controller to display a set of ViewControllers in a horizontal scroll view. Written in Swift.'
 
 # This description is used to generate tags and improve search results.
