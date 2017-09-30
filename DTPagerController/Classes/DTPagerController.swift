@@ -203,7 +203,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         
         // Update child view controllers' view frame
         for (index, viewController) in viewControllers.enumerated() {
-            viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
+            viewController.viewIfLoaded?.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
         }
         
         // Update scroll indicator's vertical position
@@ -297,16 +297,22 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         
         setUpSegmentedControl(titles: titles)
         
+        let indexes = self.visiblePageIndexes()
         
         // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
         for (index, viewController) in viewControllers.enumerated() {
             // Add first view controller to controller hierachy
+            // Also, only add first child view controller's view to view hierachy
             if index == 0 {
                 viewController.willMove(toParentViewController: self)
                 addChildViewController(viewController)
             }
             
-            pageScrollView.addSubview(viewController.view)
+            // Add view controller's view if it must be visible in scroll view
+            if let _ = indexes.index(of: index) {
+                viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
+                pageScrollView.addSubview(viewController.view)
+            }
             
             if index == 0 {
                 viewController.didMove(toParentViewController: self)
@@ -321,6 +327,15 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Delegate
         delegate?.pagerController?(self, scrollViewdidScroll: scrollView)
+        
+        // Add child view controller's view if needed
+        let indexes = self.visiblePageIndexes()
+        
+        for index in indexes {
+            let viewController = viewControllers[index]
+            viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
+            pageScrollView.addSubview(viewController.view)
+        }
         
         // Update bar position
         scrollIndicator.frame.origin.x = scrollView.contentOffset.x/scrollView.contentSize.width * scrollView.frame.size.width
@@ -361,6 +376,24 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
+    }
+    
+    // Return page indexes that are visible
+    private func visiblePageIndexes() -> [Int] {
+        guard pageScrollView.bounds.width > 0, viewControllers.count > 0 else {
+            return []
+        }
+        
+        let offsetRatio = pageScrollView.contentOffset.x / pageScrollView.bounds.width
+        
+        if offsetRatio <= 0 {
+            return [0]
+        }
+        else if offsetRatio >= CGFloat(viewControllers.count - 1) {
+            return [viewControllers.count - 1]
+        }
+        
+        return [Int(floor(offsetRatio)), Int(ceil(offsetRatio))]
     }
 }
 
