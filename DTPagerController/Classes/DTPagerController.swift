@@ -391,13 +391,13 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
 
 extension DTPagerController {
     func updateSegmentedNormalTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor : textColor], for: .normal)
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : font, NSForegroundColorAttributeName : textColor], for: .normal)
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : font, NSForegroundColorAttributeName : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
     }
     
     func updateSegmentedSelectedTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : selectedFont, NSAttributedStringKey.foregroundColor : selectedTextColor], for: .selected)
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : selectedFont, NSAttributedStringKey.foregroundColor : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedFont, NSForegroundColorAttributeName : selectedTextColor], for: .selected)
+        pageSegmentedControl.setTitleTextAttributes([NSFontAttributeName : selectedFont, NSForegroundColorAttributeName : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
     }
     
     func updateSegmentedTitleTextAttributes() {
