@@ -29,7 +29,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }()
     
     /// Delegate
-    open weak var delegate: DTPagerControllerDelegate?
+    @objc open weak var delegate: DTPagerControllerDelegate?
     
     /// Preferred height of segmented control bar.
     /// Default value is 44.
@@ -151,7 +151,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     /// Page scroll view
     /// This should not be exposed. Changing behavior of pageScrollView will destroy functionality of DTPagerController
-    lazy var pageScrollView : UIScrollView = {
+    public private(set) lazy var pageScrollView : UIScrollView = {
         let pageScrollView = UIScrollView()
         pageScrollView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         pageScrollView.showsHorizontalScrollIndicator = false
@@ -159,6 +159,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         pageScrollView.delegate = self
         pageScrollView.isPagingEnabled = true
         pageScrollView.scrollsToTop = false
+        
+        observeScrollViewDelegate(pageScrollView)
+        
         return pageScrollView
     }()
     
@@ -180,6 +183,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     deinit {
         unobserveTitleFrom(viewControllers: viewControllers)
+        unobserveScrollViewDelegate(pageScrollView)
     }
     
     override open func loadView() {
@@ -364,9 +368,16 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if let viewController = object as? UIViewController {
-            if keyPath == "title" {
+            if keyPath == #keyPath(UIViewController.title) {
                 if let index = viewControllers.index(of: viewController) {
                     pageSegmentedControl.setTitle(viewController.title, forSegmentAt: index)
+                }
+            }
+        }
+        else if let scrollView = object as? UIScrollView {
+            if scrollView == pageScrollView {
+                if keyPath == #keyPath(UIScrollView.delegate) {
+                    fatalError("Cannot set delegate of pageScrollView to different object than DTPagerController that owns it.")
                 }
             }
         }
@@ -449,6 +460,15 @@ extension DTPagerController {
         for viewController in viewControllers {
             viewController.removeObserver(self, forKeyPath: #keyPath(title))
         }
+    }
+    
+    // Observe delegate value changed to disallow that
+    func observeScrollViewDelegate(_ scrollView: UIScrollView) {
+        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.delegate), options: NSKeyValueObservingOptions.new, context: nil)
+    }
+    
+    func unobserveScrollViewDelegate(_ scrollView: UIScrollView) {
+        scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.delegate), context: nil)
     }
 }
 
