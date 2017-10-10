@@ -75,6 +75,12 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Get only.
     open var viewControllers: [UIViewController] {
         didSet {
+            // Remove observers
+            unobserveTitleFrom(viewControllers: oldValue)
+            
+            // Add observers
+            observeTitleFrom(viewControllers: viewControllers)
+            
             removeChildViewControllers(oldValue)
             setUpViewControllers()
         }
@@ -164,9 +170,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         super.init(nibName: nil, bundle: nil)
         
         // Observe title of each view controller to update segmented control
-        for viewController in viewControllers {
-            viewController.addObserver(self, forKeyPath: #keyPath(title), options: NSKeyValueObservingOptions.new, context: nil)
-        }
+        observeTitleFrom(viewControllers: viewControllers)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -175,9 +179,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
     
     deinit {
-        for viewController in viewControllers {
-            viewController.removeObserver(self, forKeyPath: #keyPath(title))
-        }
+        unobserveTitleFrom(viewControllers: viewControllers)
     }
     
     override open func loadView() {
@@ -432,6 +434,21 @@ extension DTPagerController {
         }
         scrollIndicator.frame.origin.x = 0
         view.addSubview(scrollIndicator)
+    }
+}
+
+//MARK: Observers
+extension DTPagerController {
+    func observeTitleFrom(viewControllers: [UIViewController]) {
+        for viewController in viewControllers {
+            viewController.addObserver(self, forKeyPath: #keyPath(title), options: NSKeyValueObservingOptions.new, context: nil)
+        }
+    }
+    
+    func unobserveTitleFrom(viewControllers: [UIViewController]) {
+        for viewController in viewControllers {
+            viewController.removeObserver(self, forKeyPath: #keyPath(title))
+        }
     }
 }
 
