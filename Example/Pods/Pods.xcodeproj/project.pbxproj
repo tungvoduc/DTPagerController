@@ -16,7 +16,6 @@
 		7CE4BDA6F9AAD1380C07AE49BB65E1FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		91E44373B55B7732C3672762DEEFF08F /* Pods-DTPagerController_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 080F01DF44BD76E360E4E37FA869D9B5 /* Pods-DTPagerController_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A811B44F97BE84FFFDB26F2FE8D91145 /* Pods-DTPagerController_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A1160CC90FC197C6AFD90A4089955E7B /* Pods-DTPagerController_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B13EEA713571B93C9F8E70F5EBA92EA8 /* ReplaceMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EA1818B0CE5AFC8F1432CD7CE1B625 /* ReplaceMe.swift */; };
 		B8111E84B84A03A18A224C0661965D76 /* Pods-DTPagerController_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D0227CE164EB1B274FA9933D3BA4A6A /* Pods-DTPagerController_Example-dummy.m */; };
 		F9F417295EBA14134ED7F056F79D4781 /* DTPagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B173F2122FB17516D452F06FD643A3E9 /* DTPagerController.swift */; };
 /* End PBXBuildFile section */
@@ -45,7 +44,6 @@
 		56B2A479CC212F2EB6501A99898BC35F /* Pods-DTPagerController_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DTPagerController_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		63995B8308D8098D0E54A525758F9E4D /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		72EA1818B0CE5AFC8F1432CD7CE1B625 /* ReplaceMe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ReplaceMe.swift; path = DTPagerController/Classes/ReplaceMe.swift; sourceTree = "<group>"; };
 		82450EF88197FE3D4694A016C6019A8A /* DTPagerController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DTPagerController-prefix.pch"; sourceTree = "<group>"; };
 		93941611F535C2774C861354D3E29C5C /* Pods-DTPagerController_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DTPagerController_Example.modulemap"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -137,7 +135,6 @@
 			children = (
 				B173F2122FB17516D452F06FD643A3E9 /* DTPagerController.swift */,
 				493132C55EEFA136F70F1EF472E49ED1 /* DTSegmentedControl.swift */,
-				72EA1818B0CE5AFC8F1432CD7CE1B625 /* ReplaceMe.swift */,
 				815415220B45BF1390741BAE7BBC76B8 /* Support Files */,
 			);
 			name = DTPagerController;
@@ -346,7 +343,6 @@
 				3CE1A3BE527A93C68859B5B849C3D63D /* DTPagerController-dummy.m in Sources */,
 				F9F417295EBA14134ED7F056F79D4781 /* DTPagerController.swift in Sources */,
 				2371AB3C35074824033328C75A68A942 /* DTSegmentedControl.swift in Sources */,
-				B13EEA713571B93C9F8E70F5EBA92EA8 /* ReplaceMe.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +389,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -524,6 +520,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = "";
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
@@ -596,7 +593,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -651,6 +648,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = "";
 				SYMROOT = "${SRCROOT}/../build";
 				VALIDATE_PRODUCT = YES;
 			};
