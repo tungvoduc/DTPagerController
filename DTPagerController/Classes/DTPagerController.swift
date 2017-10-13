@@ -323,6 +323,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     //MARK: UIScrollViewDelegate's method
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Disable animation
+        UIView.setAnimationsEnabled(false)
+        
         // Delegate
         delegate?.pagerController?(self, scrollViewdidScroll: scrollView)
         
@@ -334,6 +337,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
             pageScrollView.addSubview(viewController.view)
         }
+
+        // Enable animation back
+        UIView.setAnimationsEnabled(true)
         
         // Update bar position
         scrollIndicator.frame.origin.x = scrollView.contentOffset.x/scrollView.contentSize.width * scrollView.frame.size.width
@@ -398,7 +404,14 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             return [viewControllers.count - 1]
         }
         
-        return [Int(floor(offsetRatio)), Int(ceil(offsetRatio))]
+        let floorValue = Int(floor(offsetRatio))
+        let ceilingValue = Int(ceil(offsetRatio))
+        
+        if floorValue == ceilingValue {
+            return [floorValue]
+        }
+        
+        return [floorValue, ceilingValue]
     }
 }
 
