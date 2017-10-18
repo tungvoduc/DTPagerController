@@ -154,13 +154,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     public private(set) lazy var pageScrollView : UIScrollView = {
         let pageScrollView = UIScrollView()
         pageScrollView.showsHorizontalScrollIndicator = false
-        
-        pageScrollView.delegate = self
         pageScrollView.isPagingEnabled = true
         pageScrollView.scrollsToTop = false
-        
-        observeScrollViewDelegate(pageScrollView)
-        
         return pageScrollView
     }()
     
@@ -195,14 +190,17 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         
+        pageScrollView.delegate = self
+        observeScrollViewDelegate(pageScrollView)
+        
         setUpViewControllers()
         
         updateSegmentedTitleTextAttributes()
         
         // Add subviews
-        view.addSubview(scrollIndicator)
         view.addSubview(pageScrollView)
         view.addSubview(pageSegmentedControl)
+        view.addSubview(scrollIndicator)
     }
     
     open override func viewDidLayoutSubviews() {
@@ -344,7 +342,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
             pageScrollView.addSubview(viewController.view)
         }
-
+        
         // Enable animation back
         UIView.setAnimationsEnabled(true)
         
@@ -486,12 +484,17 @@ extension DTPagerController {
     }
     
     // Observe delegate value changed to disallow that
+    // Called in viewDidLoad
     func observeScrollViewDelegate(_ scrollView: UIScrollView) {
         scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.delegate), options: NSKeyValueObservingOptions.new, context: nil)
     }
     
+    
     func unobserveScrollViewDelegate(_ scrollView: UIScrollView) {
-        scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.delegate), context: nil)
+        // observeScrollViewDelegate is called in viewDidLoad
+        // check if viewDidLoad has been called before remove observer
+        if viewIfLoaded != nil {
+            scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.delegate), context: nil)
+        }
     }
 }
-
