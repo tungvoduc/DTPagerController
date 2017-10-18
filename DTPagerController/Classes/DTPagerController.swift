@@ -208,9 +208,6 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        // Scroll view
-        setUpPageScrollView()
-        
         // Update segmented control frame
         pageSegmentedControl.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: segmentedControlHeight)
         
@@ -218,6 +215,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         for (index, viewController) in viewControllers.enumerated() {
             viewController.viewIfLoaded?.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
         }
+        
+        // Scroll view
+        setUpPageScrollView()
         
         // Update scroll indicator's vertical position
         setUpScrollIndicator()
