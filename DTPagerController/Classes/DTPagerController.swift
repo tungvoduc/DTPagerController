@@ -153,7 +153,6 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// This should not be exposed. Changing behavior of pageScrollView will destroy functionality of DTPagerController
     public private(set) lazy var pageScrollView : UIScrollView = {
         let pageScrollView = UIScrollView()
-        pageScrollView.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         pageScrollView.showsHorizontalScrollIndicator = false
         
         pageScrollView.delegate = self
@@ -453,9 +452,13 @@ extension DTPagerController {
     
     func setUpPageScrollView() {
         let size = view.bounds.size
-        pageScrollView.contentOffset.x = pageScrollView.frame.width * CGFloat(selectedPageIndex)
-        pageScrollView.contentSize = CGSize(width: view.bounds.width * CGFloat(viewControllers.count), height: 0)
+        
+        // Updating pageScrollView's frame or contentSize will automatically trigger scrollViewDidScroll(_: UIScrollView) and update selectedPageIndex
+        // We need to save the value of selectedPageIndex and update pageScrollView's horizontal content offset correctly.
+        let index = selectedPageIndex
         pageScrollView.frame = CGRect(x: 0, y: segmentedControlHeight, width: size.width, height: size.height - segmentedControlHeight)
+        pageScrollView.contentSize = CGSize(width: pageScrollView.frame.width * CGFloat(viewControllers.count), height: 0)
+        pageScrollView.contentOffset.x = pageScrollView.frame.width * CGFloat(index)
     }
     
     func setUpScrollIndicator() {
