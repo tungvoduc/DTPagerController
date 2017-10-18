@@ -199,10 +199,18 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         setUpViewControllers()
         
         updateSegmentedTitleTextAttributes()
+        
+        // Add subviews
+        view.addSubview(scrollIndicator)
+        view.addSubview(pageScrollView)
+        view.addSubview(pageSegmentedControl)
     }
     
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        // Scroll view
+        setUpPageScrollView()
         
         // Update segmented control frame
         pageSegmentedControl.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: segmentedControlHeight)
@@ -213,7 +221,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         }
         
         // Update scroll indicator's vertical position
-        scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
+        setUpScrollIndicator()
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -441,23 +449,22 @@ extension DTPagerController {
         pageSegmentedControl.selectedSegmentIndex = 0
         pageSegmentedControl.addTarget(self, action: #selector(pageSegmentedControlValueChanged), for: UIControlEvents.valueChanged)
         selectedPageIndex = previousPageIndex
-        view.addSubview(pageSegmentedControl)
     }
     
     func setUpPageScrollView() {
         let size = view.bounds.size
+        pageScrollView.contentOffset.x = pageScrollView.frame.width * CGFloat(selectedPageIndex)
         pageScrollView.contentSize = CGSize(width: view.bounds.width * CGFloat(viewControllers.count), height: 0)
         pageScrollView.frame = CGRect(x: 0, y: segmentedControlHeight, width: size.width, height: size.height - segmentedControlHeight)
-        
-        view.addSubview(pageScrollView)
     }
     
     func setUpScrollIndicator() {
         if viewControllers.count > 0 {
             scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
         }
-        scrollIndicator.frame.origin.x = 0
-        view.addSubview(scrollIndicator)
+        
+        scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
+        scrollIndicator.frame.origin.x = scrollIndicator.frame.width * CGFloat(selectedPageIndex)
     }
 }
 
