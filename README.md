@@ -42,6 +42,9 @@ pagerController.selectedTextColor = UIColor.red
 // Change scroll indicator height
 pagerController.perferredScrollIndicatorHeight = 3
 
+// Change scroll indicator color
+self.scrollIndicator.backgroundColor = UIColor.black
+
 ```
 
 ## Example

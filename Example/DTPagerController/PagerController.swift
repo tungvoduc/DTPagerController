@@ -34,6 +34,28 @@ class PagerController: DTPagerController {
         viewController3.scrollView.backgroundColor = UIColor.red
         
         viewControllers = [viewController1, viewController2, viewController3]
+        
+        // Change the height of segmented control
+        self.preferredSegmentedControlHeight = 42
+        
+        // Change normal font of each segmented control
+        self.font = UIFont.systemFont(ofSize: 15)
+        
+        // Change selected font of each segmented control
+        self.selectedFont = UIFont.systemFont(ofSize: 15)
+        
+        // Change normal text color of each segmented control
+        self.textColor = UIColor.black
+        
+        // Change selected text color of each segmented control
+        self.selectedTextColor = UIColor.red
+        
+        // Change scroll indicator height
+        self.perferredScrollIndicatorHeight = 3
+        
+        // Change scroll indicator color
+        self.scrollIndicator.backgroundColor = UIColor.black
+        
         // Do any additional setup after loading the view.
     }
 
