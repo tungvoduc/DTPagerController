@@ -23,22 +23,22 @@ class ViewController: UIViewController {
         view.addSubview(button)
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("viewWillDisappear")
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear")
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         print("viewDidDisappear")
@@ -48,16 +48,16 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         scrollView.contentSize = CGSize(width: view.bounds.width, height: view.bounds.height * 2)
         scrollView.frame = view.bounds
-        
+
         let buttonHeight: CGFloat = 50
         let buttonWidth: CGFloat = 100
-        button.frame = CGRect(x: (view.bounds.width - buttonWidth)/2, y: (view.bounds.height - buttonHeight)/2, width: buttonWidth, height: buttonHeight)
-        button.layer.cornerRadius = buttonHeight/2
+        button.frame = CGRect(x: (view.bounds.width - buttonWidth) / 2, y: (view.bounds.height - buttonHeight) / 2, width: buttonWidth, height: buttonHeight)
+        button.layer.cornerRadius = buttonHeight / 2
     }
 
     @objc func buttonTapped() {

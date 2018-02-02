@@ -18,19 +18,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        
+
         let pagerController = PagerController()
         pagerController.title = "PagerController"
-        
+
         let navigationController = UINavigationController(rootViewController: pagerController)
         navigationController.navigationBar.isTranslucent = false
-        
+
         let tabbarController = UITabBarController()
         tabbarController.viewControllers = [navigationController]
-        
+
         window?.rootViewController = tabbarController
         window?.makeKeyAndVisible()
-        
+
         return true
     }
 
