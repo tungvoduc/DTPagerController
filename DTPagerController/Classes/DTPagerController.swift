@@ -209,13 +209,15 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         // Update segmented control frame
         pageSegmentedControl.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: segmentedControlHeight)
         
-        // Update child view controllers' view frame
-        for (index, viewController) in viewControllers.enumerated() {
-            viewController.viewIfLoaded?.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
-        }
-        
         // Scroll view
         setUpPageScrollView()
+        
+        // Update child view controllers' view frame
+        for (index, viewController) in viewControllers.enumerated() {
+            if let view = viewController.viewIfLoaded {
+                view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: pageScrollView.bounds.width, height: pageScrollView.bounds.height)
+            }
+        }
         
         // Update scroll indicator's vertical position
         setUpScrollIndicator()
@@ -292,38 +294,40 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     // Setup new child view controllers
     // Called in viewDidLoad or each time a new array of viewControllers is set
     private func setUpViewControllers() {
-        // Setup page scroll view
-        setUpPageScrollView()
-        
-        // Page segmented control
-        var titles = [String]()
-        
-        for (_, viewController) in viewControllers.enumerated() {
-            titles.append(viewController.title ?? "")
-        }
-        
-        setUpSegmentedControl(titles: titles)
-        
-        let indexes = self.visiblePageIndexes()
-        
-        // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
-        for (index, viewController) in viewControllers.enumerated() {
-            // Add view controller's view if it must be visible in scroll view
-            if let _ = indexes.index(of: index) {
-                // Add to call viewDidLoad if needed
-                viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
-                pageScrollView.addSubview(viewController.view)
-                
-                // This will call viewWillAppear
-                addChildViewController(viewController)
-                
-                // This will call viewDidAppear
-                viewController.didMove(toParentViewController: self)
+        if viewIfLoaded != nil {
+            // Setup page scroll view
+            setUpPageScrollView()
+            
+            // Page segmented control
+            var titles = [String]()
+            
+            for (_, viewController) in viewControllers.enumerated() {
+                titles.append(viewController.title ?? "")
             }
+            
+            setUpSegmentedControl(titles: titles)
+            
+            let indexes = self.visiblePageIndexes()
+            
+            // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
+            for (index, viewController) in viewControllers.enumerated() {
+                // Add view controller's view if it must be visible in scroll view
+                if let _ = indexes.index(of: index) {
+                    // Add to call viewDidLoad if needed
+                    viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
+                    pageScrollView.addSubview(viewController.view)
+                    
+                    // This will call viewWillAppear
+                    addChildViewController(viewController)
+                    
+                    // This will call viewDidAppear
+                    viewController.didMove(toParentViewController: self)
+                }
+            }
+            
+            // Scroll indicator
+            setUpScrollIndicator()
         }
-        
-        // Scroll indicator
-        setUpScrollIndicator()
     }
     
     //MARK: UIScrollViewDelegate's method
@@ -347,7 +351,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         UIView.setAnimationsEnabled(true)
         
         // Update bar position
-        scrollIndicator.frame.origin.x = scrollView.contentOffset.x/scrollView.contentSize.width * scrollView.frame.size.width
+        updateScrollIndicatorHorizontalPosition(with: scrollView)
+        
         // When content offset changes, check if it is closer to the next page
         var index: Int = 0
         if scrollView.contentOffset.x == 0 && scrollView.frame.size.width == 0 {
@@ -361,6 +366,12 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         if pageSegmentedControl.selectedSegmentIndex != index {
             pageSegmentedControl.selectedSegmentIndex = index
         }
+    }
+    
+    // Update indicator center
+    open func updateScrollIndicatorHorizontalPosition(with scrollView: UIScrollView) {
+        let itemWidth = scrollView.frame.width/CGFloat(viewControllers.count)
+        scrollIndicator.center.x = (scrollView.contentOffset.x/scrollView.frame.width + 0.5) * itemWidth
     }
     
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -418,6 +429,15 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         
         return [floorValue, ceilingValue]
     }
+    
+    open func setUpScrollIndicator() {
+        if viewControllers.count > 0 {
+            scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
+        }
+        
+        scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
+        updateScrollIndicatorHorizontalPosition(with: pageScrollView)
+    }
 }
 
 extension DTPagerController {
@@ -458,15 +478,6 @@ extension DTPagerController {
         pageScrollView.contentSize = CGSize(width: pageScrollView.frame.width * CGFloat(viewControllers.count), height: 0)
         pageScrollView.contentOffset.x = pageScrollView.frame.width * CGFloat(index)
     }
-    
-    func setUpScrollIndicator() {
-        if viewControllers.count > 0 {
-            scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
-        }
-        
-        scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
-        scrollIndicator.frame.origin.x = scrollIndicator.frame.width * CGFloat(selectedPageIndex)
-    }
 }
 
 //MARK: Observers
@@ -498,3 +509,4 @@ extension DTPagerController {
         }
     }
 }
+
