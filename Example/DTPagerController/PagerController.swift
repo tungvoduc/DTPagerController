@@ -26,7 +26,7 @@ class PagerController: DTPagerController {
         viewController1.scrollView.backgroundColor = UIColor.green
         
         let viewController2 = ViewController()
-        viewController2.title = "VC 2"
+        viewController2.title = "Very looooong title"
         viewController2.scrollView.backgroundColor = UIColor.purple
         
         let viewController3 = ViewController()
