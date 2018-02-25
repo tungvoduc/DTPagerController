@@ -31,6 +31,7 @@ let viewController2 = ViewController()
 let pagerController = DTPagerController(viewControllers: [viewController1, viewController2])
 ```
 
+### Custom UI
 DTPagerController is also customizable in case you want to implement your own UI.
 
 ```swift
@@ -55,7 +56,8 @@ pagerController.perferredScrollIndicatorHeight = 3
 
 ```
 
-From version 2.0.0, DTPagerController supports custom segmented control. Therefore, instead of using default DTSegmentedControl, you can provide your own SegmentedControl or a 3rd-party SegmentedControl available out there. All you have to do is making your custom SegmentedControl conform DTSegmentedControlProtocol. For example, as shown in sample project, HMSegmentedControl is made to conform DTSegmentedControlProtocol by using extension:
+### Custom segmented control
+From version **2.0.0**, DTPagerController supports custom segmented control. Therefore, instead of using default **DTSegmentedControl**, you can provide your own segmented control or any 3rd-party segmented control libraries available out there. All you have to do is making your custom UIControl conform **DTSegmentedControlProtocol**. For example, as shown in sample project, **HMSegmentedControl** is made to conform **DTSegmentedControlProtocol** by using extension:
 
 ```swift
 
@@ -93,12 +95,36 @@ init(viewControllers controllers: [UIViewController]) {
 
 ```
 
+When using custom segmented control, it is recommneded to override/take a look at the following methods to customize behavior and appearance of each segments:
+
+```swift
+
+// Setup custom segmented control
+func setUpSegmentedControl(viewControllers: [UIViewController])
+
+// Update a custom appearance for segment
+func updateAppearanceForSegmentedItem(at index: Int)
+
+// Update a custom scroll indicator if exists
+func updateScrollIndicator(with offsetRatio: CGFloat, scrollView: UIScrollView)
+
+// Setup custom scroll indicator
+func setUpScrollIndicator()
+
+// Manually update segment title
+func setTitle(_ title: String?, forSegmentAt segment: Int)
+    
+// Manually update segment image
+func setImage(_ image: UIImage?, forSegmentAt segment: Int)
+
+```
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
-### iOS 9+
+### iOS 9.0+
 
 ## Installation
 
