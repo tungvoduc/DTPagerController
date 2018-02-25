@@ -355,7 +355,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         }
         
         for (index, _) in viewControllers.enumerated() {
-            // Only insert new segment if using default DTSegmentedControl
+            // Only insert new segment if using default UISegmentedControl
             if let pageSegmentedControl = pageSegmentedControl as? UISegmentedControl {
                 pageSegmentedControl.insertSegment(withTitle: "", at: index, animated: false)
             }
