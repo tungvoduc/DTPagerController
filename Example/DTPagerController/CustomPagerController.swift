@@ -40,13 +40,13 @@ class CustomPagerController: DTPagerController {
         segmentedControl.selectionIndicatorColor = UIColor.blue
     }
     
-    override func setUpAppearanceForSegmentedItem(at index: Int) {
+    override func updateAppearanceForSegmentedItem(at index: Int) {
         // Does not do anything since custom page control does not support title/image update
     }
     
 }
 
-extension HMSegmentedControl: SegmentedControl {
+extension HMSegmentedControl: DTSegmentedControlProtocol {
     
     public var numberOfSegments: Int {
         // Custom page control does not support
