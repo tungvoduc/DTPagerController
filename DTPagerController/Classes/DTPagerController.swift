@@ -364,7 +364,11 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             updateAppearanceForSegmentedItem(at: index)
         }
         
-        pageSegmentedControl.addTarget(self, action: #selector(pageSegmentedControlValueChanged), for: UIControlEvents.valueChanged)
+        // Add target if needed
+        if self != (pageSegmentedControl.target(forAction: #selector(pageSegmentedControlValueChanged), withSender: UIControlEvents.valueChanged) as? DTPagerController) {
+            pageSegmentedControl.addTarget(self, action: #selector(pageSegmentedControlValueChanged), for: UIControlEvents.valueChanged)
+        }
+        
         selectedPageIndex = previousPageIndex
     }
     
