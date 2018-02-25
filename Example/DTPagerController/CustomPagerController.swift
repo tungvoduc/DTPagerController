@@ -48,34 +48,12 @@ class CustomPagerController: DTPagerController {
 
 extension HMSegmentedControl: DTSegmentedControlProtocol {
     
-    public var numberOfSegments: Int {
-        // Custom page control does not support
-        return 0
-    }
-    
-    public func insertSegment(withTitle title: String?, at segment: Int, animated: Bool) {
-        // Custom page control does not support
-    }
-    
-    public func insertSegment(with image: UIImage?, at segment: Int, animated: Bool) {
-        // Custom page control does not support
-    }
-    
-    public func removeSegment(at segment: Int, animated: Bool) {
-        // Custom page control does not support
-    }
-    
-    public func removeAllSegments() {
+    public func setImage(_ image: UIImage?, forSegmentAt segment: Int) {
         // Custom page control does not support
     }
     
     public func setTitle(_ title: String?, forSegmentAt segment: Int) {
         // Custom page control does not support
-    }
-    
-    public func titleForSegment(at segment: Int) -> String? {
-        // Custom page control does not support
-        return nil
     }
     
     public func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState) {
@@ -85,17 +63,6 @@ extension HMSegmentedControl: DTSegmentedControlProtocol {
         else if state == UIControlState.selected {
             selectedTitleTextAttributes = attributes
         }
-    }
-    
-    public func titleTextAttributes(for state: UIControlState) -> [AnyHashable : Any]? {
-        if state == UIControlState.normal {
-            return titleTextAttributes
-        }
-        else if state == UIControlState.selected {
-            return selectedTitleTextAttributes
-        }
-        
-        return nil
     }
     
 }
