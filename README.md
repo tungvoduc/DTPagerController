@@ -8,7 +8,18 @@
 This is a control for iOS written in Swift. DTPagerController is simple to use and easy to customize. 
 
 ## Screenshot
-![Screenshot](Screenshot.PNG)
+
+* **Default segmented control**
+
+<p align="left" >
+  <img src="Screenshot.PNG" title="Default segmented control" width = "320">
+</p> 
+
+
+* **Custom segmented control**
+<p align="left" >
+  <img src="Screenshot2.png" title="Custom segmented control" width = "320">
+</p> 
 
 ## Usage
 
@@ -20,6 +31,7 @@ let viewController2 = ViewController()
 let pagerController = DTPagerController(viewControllers: [viewController1, viewController2])
 ```
 
+### Custom UI
 DTPagerController is also customizable in case you want to implement your own UI.
 
 ```swift
@@ -44,12 +56,75 @@ pagerController.perferredScrollIndicatorHeight = 3
 
 ```
 
+### Custom segmented control
+From version **2.0.0**, DTPagerController supports custom segmented control. Therefore, instead of using default **DTSegmentedControl**, you can provide your own segmented control or any 3rd-party segmented control libraries available out there. All you have to do is making your custom UIControl conform **DTSegmentedControlProtocol**. For example, as shown in sample project, **HMSegmentedControl** is made to conform **DTSegmentedControlProtocol** by using extension:
+
+```swift
+
+extension HMSegmentedControl: DTSegmentedControlProtocol {
+    
+    public func setImage(_ image: UIImage?, forSegmentAt segment: Int) {
+        // Custom page control does not support
+    }
+    
+    public func setTitle(_ title: String?, forSegmentAt segment: Int) {
+        // Custom page control does not support
+    }
+    
+    public func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState) {
+        if state == UIControlState.normal {
+            titleTextAttributes = attributes
+        }
+        else if state == UIControlState.selected {
+            selectedTitleTextAttributes = attributes
+        }
+    }
+    
+}
+
+```
+
+Then we create new pager controller with the custom segmented control:
+
+```swift
+
+init(viewControllers controllers: [UIViewController]) {
+        let segmentedControl = HMSegmentedControl(sectionTitles: ["Page 1", "Page 2", "Page 3"])
+        super.init(viewControllers: controllers, pageSegmentedControl: segmentedControl!)
+}
+
+```
+
+When using custom segmented control, it is recommneded to override/take a look at the following methods to customize behavior and appearance of each segments:
+
+```swift
+
+// Setup custom segmented control
+func setUpSegmentedControl(viewControllers: [UIViewController])
+
+// Update a custom appearance for segment
+func updateAppearanceForSegmentedItem(at index: Int)
+
+// Update a custom scroll indicator if exists
+func updateScrollIndicator(with offsetRatio: CGFloat, scrollView: UIScrollView)
+
+// Setup custom scroll indicator
+func setUpScrollIndicator()
+
+// Manually update segment title
+func setTitle(_ title: String?, forSegmentAt segment: Int)
+    
+// Manually update segment image
+func setImage(_ image: UIImage?, forSegmentAt segment: Int)
+
+```
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Requirements
-### iOS 9+
+### iOS 9.0+
 
 ## Installation
 
