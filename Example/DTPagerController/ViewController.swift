@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     lazy var button: UIButton = {
         let button = UIButton(type: UIButtonType.custom)
         button.backgroundColor = UIColor.black
+        button.setTitle("Push", for: UIControlState.normal)
         button.addTarget(self, action: #selector(buttonTapped), for: UIControlEvents.touchUpInside)
         return button
     }()
@@ -61,8 +62,14 @@ class ViewController: UIViewController {
     }
 
     @objc func buttonTapped() {
-        let pagerController = PagerController()
-        navigationController?.pushViewController(pagerController, animated: true)
+        if pagerController is PagerController {
+            let pagerController = PagerController()
+            navigationController?.pushViewController(pagerController, animated: true)
+        }
+        else {
+            let pagerController = CustomPagerController()
+            navigationController?.pushViewController(pagerController, animated: true)
+        }
     }
 }
 

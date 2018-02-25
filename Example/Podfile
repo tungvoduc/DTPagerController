@@ -2,6 +2,7 @@ use_frameworks!
 
 target 'DTPagerController_Example' do
   pod 'DTPagerController', :path => '../'
+  pod 'HMSegmentedControl'
 
   target 'DTPagerController_Tests' do
     inherit! :search_paths
