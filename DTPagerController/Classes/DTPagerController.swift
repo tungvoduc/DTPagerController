@@ -325,6 +325,14 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    public func setTitle(_ title: String?, forSegmentAt segment: Int) {
+        pageSegmentedControl.setTitle(title, forSegmentAt: segment)
+    }
+    
+    public func setImage(_ image: UIImage?, forSegmentAt segment: Int) {
+        pageSegmentedControl.setImage(image, forSegmentAt: segment)
+    }
+    
     func setUpPageScrollView() {
         let size = view.bounds.size
         
@@ -341,11 +349,18 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// If you provide a custom segmented control, all of your setup could be here. For example, create a new custom segmented control based on number of items in viewControllers and set with new titles.
     open func setUpSegmentedControl(viewControllers: [UIViewController]) {
         
-        pageSegmentedControl.removeAllSegments()
+        // Only remove all segments if using UISegmentedControl
+        if let pageSegmentedControl = pageSegmentedControl as? UISegmentedControl {
+            pageSegmentedControl.removeAllSegments()
+        }
         
         for (index, _) in viewControllers.enumerated() {
+            // Only insert new segment if using default DTSegmentedControl
+            if let pageSegmentedControl = pageSegmentedControl as? UISegmentedControl {
+                pageSegmentedControl.insertSegment(withTitle: "", at: index, animated: false)
+            }
+            
             // Call this method to setup appearance for every single segmented.
-            pageSegmentedControl.insertSegment(withTitle: "", at: index, animated: false)
             updateAppearanceForSegmentedItem(at: index)
         }
         
