@@ -1,7 +1,7 @@
 {
   "name": "DTPagerController",
-  "version": "1.0.2",
-  "summary": "A customizable control for pager of view controllers.",
+  "version": "1.1.7",
+  "summary": "A fully customizable container view controller to display a set of ViewControllers in a horizontal scroll view. Written in Swift.",
   "description": "TODO: Add long description of the pod here.\nDTPagerController is an extremely simple Swift control for you to show a collection of view controllers in a horizontal pager.",
   "homepage": "https://github.com/tungvoduc/DTPagerController",
   "license": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/tungvoduc/DTPagerController.git",
-    "tag": "1.0.2"
+    "tag": "1.1.7"
   },
   "platforms": {
     "ios": "9.0"

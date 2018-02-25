@@ -19,14 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let pagerController = PagerController()
-        pagerController.title = "PagerController"
-        
-        let navigationController = UINavigationController(rootViewController: pagerController)
-        navigationController.navigationBar.isTranslucent = false
+        // Navigation controllers
+        let navigationController1 = UINavigationController(rootViewController: CustomPagerController())
+        let navigationController2 = UINavigationController(rootViewController: PagerController())
+        // navigationController1.navigationBar.isTranslucent = false
         
         let tabbarController = UITabBarController()
-        tabbarController.viewControllers = [navigationController]
+        tabbarController.viewControllers = [navigationController1, navigationController2]
         
         window?.rootViewController = tabbarController
         window?.makeKeyAndVisible()
