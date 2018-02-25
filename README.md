@@ -8,7 +8,18 @@
 This is a control for iOS written in Swift. DTPagerController is simple to use and easy to customize. 
 
 ## Screenshot
-![Screenshot](Screenshot.PNG)
+
+* **Default segmented control**
+
+<p align="left" >
+  <img src="Screenshot.PNG" title="Default segmented control" width = "320">
+</p> 
+
+
+* **Custom segmented control**
+<p align="left" >
+  <img src="Screenshot2.png" title="Custom segmented control" width = "320">
+</p> 
 
 ## Usage
 
@@ -41,6 +52,44 @@ pagerController.selectedTextColor = UIColor.red
 
 // Change scroll indicator height
 pagerController.perferredScrollIndicatorHeight = 3
+
+```
+
+From version 2.0.0, DTPagerController supports custom segmented control. Therefore, instead of using default DTSegmentedControl, you can provide your own SegmentedControl or a 3rd-party SegmentedControl available out there. All you have to do is making your custom SegmentedControl conform DTSegmentedControlProtocol. For example, as shown in sample project, HMSegmentedControl is made to conform DTSegmentedControlProtocol by using extension:
+
+```swift
+
+extension HMSegmentedControl: DTSegmentedControlProtocol {
+    
+    public func setImage(_ image: UIImage?, forSegmentAt segment: Int) {
+        // Custom page control does not support
+    }
+    
+    public func setTitle(_ title: String?, forSegmentAt segment: Int) {
+        // Custom page control does not support
+    }
+    
+    public func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState) {
+        if state == UIControlState.normal {
+            titleTextAttributes = attributes
+        }
+        else if state == UIControlState.selected {
+            selectedTitleTextAttributes = attributes
+        }
+    }
+    
+}
+
+```
+
+Then we create new pager controller with the custom segmented control:
+
+```swift
+
+init(viewControllers controllers: [UIViewController]) {
+        let segmentedControl = HMSegmentedControl(sectionTitles: ["Page 1", "Page 2", "Page 3"])
+        super.init(viewControllers: controllers, pageSegmentedControl: segmentedControl!)
+}
 
 ```
 
