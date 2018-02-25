@@ -13,22 +13,12 @@ import UIKit
 public protocol DTSegmentedControlProtocol {
     
     var selectedSegmentIndex: Int { get set }
-
-    func insertSegment(withTitle title: String?, at segment: Int, animated: Bool) // insert before segment number. 0..#segments. value pinned
     
-    func insertSegment(with image: UIImage?, at segment: Int, animated: Bool)
+    func setTitle(_ title: String?, forSegmentAt segment: Int)
     
-    func removeSegment(at segment: Int, animated: Bool)
-    
-    func removeAllSegments()
-    
-    func setTitle(_ title: String?, forSegmentAt segment: Int) // can only have image or title, not both. must be 0..#segments - 1 (or ignored). default is nil
-    
-    func titleForSegment(at segment: Int) -> String?
+    func setImage(_ image: UIImage?, forSegmentAt segment: Int)
     
     func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState)
-    
-    func titleTextAttributes(for state: UIControlState) -> [AnyHashable : Any]?
     
 }
 
