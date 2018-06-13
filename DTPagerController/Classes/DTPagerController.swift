@@ -149,17 +149,28 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         return pageScrollView
     }()
     
-    /// Initializer with array of view controllers to be displayed in pager.
-    /// Title of each view controller will be used to display in each tab of segmented control.
-    public init(viewControllers controllers: [UIViewController], pageSegmentedControl segmentedControl: UIControl & DTSegmentedControlProtocol = DTSegmentedControl(items: [])) {
+    /// Initializer
+    /// - parameters:
+    ///     - viewControllers: array of child view controllers displayed in pager controller.
+    public init(viewControllers controllers: [UIViewController]) {
+        
+        pageSegmentedControl = DTSegmentedControl(items: [])
+        viewControllers = controllers
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    
+    /// Initializer
+    /// - parameters:
+    ///     - viewControllers: array of child view controllers displayed in pager controller.
+    ///     - pageSegmentedControl: segmented control used in pager controller.
+    public init(viewControllers controllers: [UIViewController], pageSegmentedControl segmentedControl: UIControl & DTSegmentedControlProtocol) {
         
         pageSegmentedControl = segmentedControl
         viewControllers = controllers
         
         super.init(nibName: nil, bundle: nil)
-        
-        // Observe title of each view controller to update segmented control
-        // observeTitleFrom(viewControllers: viewControllers)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -170,7 +181,6 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
     
     deinit {
-        // unobserveTitleFrom(viewControllers: viewControllers)
         unobserveScrollViewDelegate(pageScrollView)
     }
     

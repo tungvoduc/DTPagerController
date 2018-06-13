@@ -38,6 +38,7 @@ class PagerController: DTPagerController {
         viewController3.scrollView.backgroundColor = UIColor.red
         
         viewControllers = [viewController1, viewController2, viewController3]
+        scrollIndicator.layer.cornerRadius = scrollIndicator.frame.height/2
         // Do any additional setup after loading the view.
     }
 

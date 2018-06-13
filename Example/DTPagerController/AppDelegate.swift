@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         // Navigation controllers
-        let navigationController1 = UINavigationController(rootViewController: CustomPagerController())
-        let navigationController2 = UINavigationController(rootViewController: PagerController())
+        let navigationController1 = UINavigationController(rootViewController: PagerController())
+        let navigationController2 = UINavigationController(rootViewController: CustomPagerController())
         // navigationController1.navigationBar.isTranslucent = false
         
         let tabbarController = UITabBarController()
