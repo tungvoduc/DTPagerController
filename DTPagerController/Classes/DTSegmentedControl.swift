@@ -30,11 +30,7 @@ open class DTSegmentedControl: UISegmentedControl, DTSegmentedControlProtocol {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-    }
-    
-    override open func layoutSubviews() {
-        super.layoutSubviews()
-        // addSidedBorder(UIRectEdge.bottom, color: UIColor.appBorderLine, thickness: 1/UIScreen.main.scale)
+        commonInit()
     }
     
     required public init?(coder aDecoder: NSCoder) {
