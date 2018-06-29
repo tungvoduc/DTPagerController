@@ -253,6 +253,17 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         let size = view.bounds.size
         let contentOffset = CGFloat(selectedPageIndex) * size.width
         
+        //Move this code before completion becasue it cause an warning
+        // Unbalanced calls to begin/end appearance transitions for ...
+        // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
+        if self.automaticallyHandleAppearanceTransitions {
+            oldViewController.removeFromParentViewController()
+            newViewController.didMove(toParentViewController: self)
+            
+            oldViewController.endAppearanceTransition()
+            newViewController.endAppearanceTransition()
+        }
+        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.5, initialSpringVelocity: 5, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
             self.pageScrollView.contentOffset = CGPoint(x: contentOffset, y: 0)
             
@@ -260,15 +271,6 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             self.setNeedsStatusBarAppearanceUpdate()
             
         }, completion: { (finished) -> Void in
-            // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
-            if self.automaticallyHandleAppearanceTransitions {
-                oldViewController.removeFromParentViewController()
-                newViewController.didMove(toParentViewController: self)
-                
-                oldViewController.endAppearanceTransition()
-                newViewController.endAppearanceTransition()
-            }
-            
             //Call delegate method after changing value
             self.delegate?.pagerController?(self, didChangeSelectedPageIndex: self.selectedPageIndex)
         })
