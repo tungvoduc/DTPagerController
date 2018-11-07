@@ -18,11 +18,12 @@ public protocol DTSegmentedControlProtocol {
     
     func setImage(_ image: UIImage?, forSegmentAt segment: Int)
     
-    func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState)
+    func setTitleTextAttributes(_ attributes: [NSAttributedString.Key : Any]?, for state: UIControl.State)
     
 }
 
 open class DTSegmentedControl: UISegmentedControl, DTSegmentedControlProtocol {
+    
     public override init(items: [Any]?) {
         super.init(items: items)
         commonInit()
@@ -40,8 +41,8 @@ open class DTSegmentedControl: UISegmentedControl, DTSegmentedControlProtocol {
     
     func commonInit() {
         tintColor = UIColor.clear
-        setDividerImage(UIImage(), forLeftSegmentState: UIControlState(), rightSegmentState: UIControlState.selected, barMetrics: UIBarMetrics.default)
-        setDividerImage(UIImage(), forLeftSegmentState: UIControlState.selected, rightSegmentState: UIControlState(), barMetrics: UIBarMetrics.default)
+        setDividerImage(UIImage(), forLeftSegmentState: UIControl.State(), rightSegmentState: UIControl.State.selected, barMetrics: UIBarMetrics.default)
+        setDividerImage(UIImage(), forLeftSegmentState: UIControl.State.selected, rightSegmentState: UIControl.State(), barMetrics: UIBarMetrics.default)
     }
 
 }

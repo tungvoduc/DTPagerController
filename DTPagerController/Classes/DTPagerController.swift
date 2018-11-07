@@ -87,7 +87,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             pageSegmentedControl.selectedSegmentIndex = newValue
             
             if newValue != previousPageIndex {
-                pageSegmentedControl.sendActions(for: UIControlEvents.valueChanged)
+                pageSegmentedControl.sendActions(for: UIControl.Event.valueChanged)
             }
         }
         
@@ -246,14 +246,14 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         
         // Call these two methods to notify that two view controllers are being removed or added to container view controller (Check Documentation)
         if automaticallyHandleAppearanceTransitions {
-            oldViewController.willMove(toParentViewController: nil)
-            addChildViewController(newViewController)
+            oldViewController.willMove(toParent: nil)
+            addChild(newViewController)
         }
         
         let size = view.bounds.size
         let contentOffset = CGFloat(selectedPageIndex) * size.width
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.5, initialSpringVelocity: 5, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.5, initialSpringVelocity: 5, options: UIView.AnimationOptions.curveEaseIn, animations: { () -> Void in
             self.pageScrollView.contentOffset = CGPoint(x: contentOffset, y: 0)
             
             // Update status bar
@@ -262,8 +262,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         }, completion: { (finished) -> Void in
             // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
             if self.automaticallyHandleAppearanceTransitions {
-                oldViewController.removeFromParentViewController()
-                newViewController.didMove(toParentViewController: self)
+                oldViewController.removeFromParent()
+                newViewController.didMove(toParent: self)
                 
                 oldViewController.endAppearanceTransition()
                 newViewController.endAppearanceTransition()
@@ -285,9 +285,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                 viewController.beginAppearanceTransition(false, animated: false)
             }
             
-            viewController.willMove(toParentViewController: nil)
+            viewController.willMove(toParent: nil)
             viewController.view.removeFromSuperview()
-            viewController.removeFromParentViewController()
+            viewController.removeFromParent()
             
             if automaticallyHandleAppearanceTransitions {
                 viewController.endAppearanceTransition()
@@ -323,10 +323,10 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                     pageScrollView.addSubview(viewController.view)
                     
                     // This will call viewWillAppear
-                    addChildViewController(viewController)
+                    addChild(viewController)
                     
                     // This will call viewDidAppear
-                    viewController.didMove(toParentViewController: self)
+                    viewController.didMove(toParent: self)
                 }
             }
             
@@ -375,8 +375,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         }
         
         // Add target if needed
-        if self != (pageSegmentedControl.target(forAction: #selector(pageSegmentedControlValueChanged), withSender: UIControlEvents.valueChanged) as? DTPagerController) {
-            pageSegmentedControl.addTarget(self, action: #selector(pageSegmentedControlValueChanged), for: UIControlEvents.valueChanged)
+        if self != (pageSegmentedControl.target(forAction: #selector(pageSegmentedControlValueChanged), withSender: UIControl.Event.valueChanged) as? DTPagerController) {
+            pageSegmentedControl.addTarget(self, action: #selector(pageSegmentedControlValueChanged), for: UIControl.Event.valueChanged)
         }
         
         selectedPageIndex = previousPageIndex
@@ -507,13 +507,13 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     //MARK: Segmented control setup
     func updateSegmentedNormalTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor : textColor], for: .normal)
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : font, NSAttributedStringKey.foregroundColor : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor : textColor], for: .normal)
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor : textColor.withAlphaComponent(0.5)], for: [.normal, .highlighted])
     }
     
     func updateSegmentedSelectedTitleTextAttributes() {
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : selectedFont, NSAttributedStringKey.foregroundColor : selectedTextColor], for: .selected)
-        pageSegmentedControl.setTitleTextAttributes([NSAttributedStringKey.font : selectedFont, NSAttributedStringKey.foregroundColor : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.font : selectedFont, NSAttributedString.Key.foregroundColor : selectedTextColor], for: .selected)
+        pageSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.font : selectedFont, NSAttributedString.Key.foregroundColor : selectedTextColor.withAlphaComponent(0.5)], for: [.selected, .highlighted])
     }
     
     func updateSegmentedTitleTextAttributes() {
