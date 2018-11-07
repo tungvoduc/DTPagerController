@@ -56,11 +56,11 @@ extension HMSegmentedControl: DTSegmentedControlProtocol {
         // Custom page control does not support
     }
     
-    public func setTitleTextAttributes(_ attributes: [AnyHashable : Any]?, for state: UIControlState) {
-        if state == UIControlState.normal {
+    public func setTitleTextAttributes(_ attributes: [NSAttributedString.Key : Any]?, for state: UIControl.State) {
+        if state == UIControl.State.normal {
             titleTextAttributes = attributes
         }
-        else if state == UIControlState.selected {
+        else if state == UIControl.State.selected {
             selectedTitleTextAttributes = attributes
         }
     }

@@ -11,10 +11,10 @@ import UIKit
 class ViewController: UIViewController {
     let scrollView = UIScrollView()
     lazy var button: UIButton = {
-        let button = UIButton(type: UIButtonType.custom)
+        let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor.black
-        button.setTitle("Push", for: UIControlState.normal)
-        button.addTarget(self, action: #selector(buttonTapped), for: UIControlEvents.touchUpInside)
+        button.setTitle("Push", for: UIControl.State.normal)
+        button.addTarget(self, action: #selector(buttonTapped), for: UIControl.Event.touchUpInside)
         return button
     }()
 
