@@ -12,6 +12,8 @@ build/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
+Example/DTPagerController.xcworkspace/xcshareddata/
+Example/Pods/Pods.xcodeproj/xcshareddata/
 *.xccheckout
 profile
 *.moved-aside
