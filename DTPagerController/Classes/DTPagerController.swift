@@ -81,7 +81,9 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
     
     /// Current index of pager
-    /// Setting selectedPageIndex before viewDidLoad is called will not have any effect
+    /// Setting selectedPageIndex before viewDidLoad is called will not have any effect.
+    /// Update selectedPageIndex will perform animation.
+    /// If you want to change page index without performing animation, use method setSelectedPageIndex(_: Int, animated: Bool).
     open var selectedPageIndex : Int {
         set {
             pageSegmentedControl.selectedSegmentIndex = newValue
@@ -91,7 +93,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             }
         }
         
-        get {//pageSegmentedControl.selectedSegmentIndex can sometimes return -1, so return 0 instead
+        get {
+            //pageSegmentedControl.selectedSegmentIndex can sometimes return -1, so return 0 instead
             return pageSegmentedControl.selectedSegmentIndex < 0 ? 0 : pageSegmentedControl.selectedSegmentIndex
         }
     }
@@ -229,50 +232,64 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     
     // MARK: Segmented control action
     @objc func pageSegmentedControlValueChanged() {
-        //Call delegate method before changing value
-        delegate?.pagerController?(self, willChangeSelectedPageIndex: selectedPageIndex, fromPageIndex: previousPageIndex)
-        
-        let oldViewController = viewControllers[previousPageIndex]
-        let newViewController = viewControllers[selectedPageIndex]
-        
-        if self.automaticallyHandleAppearanceTransitions {
-            oldViewController.beginAppearanceTransition(false, animated: true)
-            newViewController.beginAppearanceTransition(true, animated: true)
-        }
-        
-        // Call these two methods to notify that two view controllers are being removed or added to container view controller (Check Documentation)
-        if automaticallyHandleAppearanceTransitions {
-            oldViewController.willMove(toParent: nil)
-            addChild(newViewController)
-        }
-        
-        let size = view.bounds.size
-        let contentOffset = CGFloat(selectedPageIndex) * size.width
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.5, initialSpringVelocity: 5, options: UIView.AnimationOptions.curveEaseIn, animations: { () -> Void in
-            self.pageScrollView.contentOffset = CGPoint(x: contentOffset, y: 0)
-            
-            // Update status bar
-            self.setNeedsStatusBarAppearanceUpdate()
-            
-        }, completion: { (finished) -> Void in
-            
-            //Call delegate method after changing value
-            self.delegate?.pagerController?(self, didChangeSelectedPageIndex: self.selectedPageIndex)
-        })
-        
-        // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
-        if automaticallyHandleAppearanceTransitions {
-            oldViewController.removeFromParent()
-            newViewController.didMove(toParent: self)
-            
-            oldViewController.endAppearanceTransition()
-            newViewController.endAppearanceTransition()
-        }
-        
-        // Setting up new previousPageIndex for next change
-        previousPageIndex =  selectedPageIndex
+        performUpdate(with: selectedPageIndex, previousPageIndex: previousPageIndex)
     }
+    
+    /// Update selected tab with or without animation
+    open func setSelectedPageIndex(_ selectedPageIndex: Int, animated: Bool) {
+        performUpdate(with: selectedPageIndex, previousPageIndex: previousPageIndex, animated: animated)
+    }
+    
+    // Update selected tab
+    private func performUpdate(with selectedPageIndex: Int, previousPageIndex: Int, animated: Bool = true) {
+        if selectedPageIndex != previousPageIndex {
+            // Call delegate method before changing value
+            delegate?.pagerController?(self, willChangeSelectedPageIndex: selectedPageIndex, fromPageIndex: previousPageIndex)
+            
+            let oldViewController = viewControllers[previousPageIndex]
+            let newViewController = viewControllers[selectedPageIndex]
+            
+            if self.automaticallyHandleAppearanceTransitions {
+                oldViewController.beginAppearanceTransition(false, animated: true)
+                newViewController.beginAppearanceTransition(true, animated: true)
+            }
+            
+            // Call these two methods to notify that two view controllers are being removed or added to container view controller (Check Documentation)
+            if automaticallyHandleAppearanceTransitions {
+                oldViewController.willMove(toParent: nil)
+                addChild(newViewController)
+            }
+            
+            let size = view.bounds.size
+            let contentOffset = CGFloat(selectedPageIndex) * size.width
+            let animationDuration = animated ? 0.5 : 0.0
+            
+            UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1.5, initialSpringVelocity: 5, options: UIView.AnimationOptions.curveEaseIn, animations: { () -> Void in
+                self.pageScrollView.contentOffset = CGPoint(x: contentOffset, y: 0)
+                
+                // Update status bar
+                self.setNeedsStatusBarAppearanceUpdate()
+                
+            }, completion: { (finished) -> Void in
+                
+                //Call delegate method after changing value
+                self.delegate?.pagerController?(self, didChangeSelectedPageIndex: self.selectedPageIndex)
+            })
+            
+            // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
+            if automaticallyHandleAppearanceTransitions {
+                oldViewController.removeFromParent()
+                newViewController.didMove(toParent: self)
+                
+                oldViewController.endAppearanceTransition()
+                newViewController.endAppearanceTransition()
+            }
+            
+            // Setting up new previousPageIndex for next change
+            self.previousPageIndex =  selectedPageIndex
+        }
+    }
+    
     
     // Remove all current child view controllers
     private func removeChildViewControllers(_ childViewControllers: [UIViewController]) {
