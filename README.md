@@ -30,6 +30,21 @@ let viewController1 = ViewController()
 let viewController2 = ViewController()
 let pagerController = DTPagerController(viewControllers: [viewController1, viewController2])
 ```
+### Update page index
+There are 3 different ways to update selected page index programmatically.
+
+```swift
+
+// Update selected page index with animation
+pagerController.selectedPageIndex = 1
+
+// Update selected page index with animation
+pagerController.setSelectedPageIndex(1, animated: true)
+
+// Update selected page index without animation
+pagerController.setSelectedPageIndex(1, animated: false)
+
+```
 
 ### Custom UI
 DTPagerController is also customizable in case you want to implement your own UI.

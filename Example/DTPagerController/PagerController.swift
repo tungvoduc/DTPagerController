@@ -39,7 +39,9 @@ class PagerController: DTPagerController {
         
         viewControllers = [viewController1, viewController2, viewController3]
         scrollIndicator.layer.cornerRadius = scrollIndicator.frame.height/2
+        
         // Do any additional setup after loading the view.
+        setSelectedPageIndex(1, animated: false)
     }
 
 }
