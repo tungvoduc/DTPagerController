@@ -1,6 +1,5 @@
 # DTPagerController
 
-[![CI Status](http://img.shields.io/travis/tungvoduc/DTPagerController.svg?style=flat)](https://travis-ci.org/tungvoduc/DTPagerController)
 [![Version](https://img.shields.io/cocoapods/v/DTPagerController.svg?style=flat)](http://cocoapods.org/pods/DTPagerController)
 [![License](https://img.shields.io/cocoapods/l/DTPagerController.svg?style=flat)](http://cocoapods.org/pods/DTPagerController)
 [![Platform](https://img.shields.io/cocoapods/p/DTPagerController.svg?style=flat)](http://cocoapods.org/pods/DTPagerController)
@@ -143,11 +142,22 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-DTPagerController is available through [CocoaPods](http://cocoapods.org). To install
+DTPagerController is available through [CocoaPods](https://cocoapods.org/pods/DTPagerController). To install
 it, simply add the following line to your Podfile:
+
+
+For Swift 5:
 
 ```ruby
 pod 'DTPagerController'
+```
+
+
+
+For Swift 4.2:
+
+```ruby
+pod 'DTPagerController', '~> 2.0.4'
 ```
 
 ## Author
