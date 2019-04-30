@@ -2,7 +2,7 @@
 //  DTSegmentedControl.swift
 //  Pods
 //
-//  Created by Admin on 15/09/2017.
+//  Created by tungvoduc on 15/09/2017.
 //
 //
 

@@ -2,7 +2,7 @@
 //  DTPagerController.swift
 //  Pods
 //
-//  Created by Tung Vo on 15/09/2017.
+//  Created by tungvoduc on 15/09/2017.
 //
 //
 
@@ -84,6 +84,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Setting selectedPageIndex before viewDidLoad is called will not have any effect.
     /// Update selectedPageIndex will perform animation.
     /// If you want to change page index without performing animation, use method setSelectedPageIndex(_: Int, animated: Bool).
+    /// - seealso: setSelectedPageIndex(_: Int, animated: Bool)
     open var selectedPageIndex : Int {
         set {
             pageSegmentedControl.selectedSegmentIndex = newValue
@@ -331,7 +332,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
             for (index, viewController) in viewControllers.enumerated() {
                 // Add view controller's view if it must be visible in scroll view
-                if let _ = indexes.index(of: index) {
+                if let _ = indexes.firstIndex(of: index) {
                     // Add to call viewDidLoad if needed
                     viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
                     pageScrollView.addSubview(viewController.view)

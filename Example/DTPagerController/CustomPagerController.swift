@@ -2,7 +2,7 @@
 //  CustomPagerController.swift
 //  DTPagerController_Example
 //
-//  Created by Admin on 25/02/2018.
+//  Created by tungvoduc on 25/02/2018.
 //  Copyright © 2018 CocoaPods. All rights reserved.
 //
 

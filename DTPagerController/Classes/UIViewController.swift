@@ -2,7 +2,7 @@
 //  UIViewController.swift
 //  DTPagerController
 //
-//  Created by Admin on 25/02/2018.
+//  Created by tungvoduc on 25/02/2018.
 //
 
 import Foundation
@@ -10,16 +10,13 @@ import Foundation
 public extension UIViewController {
     var pagerController : DTPagerController? {
         get {
-            var viewController : UIViewController?
-            viewController = self
+            var viewController = parent
             
             while viewController != nil {
-                if let containerViewController = viewController?.parent as? DTPagerController {
+                if let containerViewController = viewController as? DTPagerController {
                     return containerViewController
                 }
-                else {
-                    viewController = viewController?.parent
-                }
+                viewController = viewController?.parent
             }
             
             return nil
