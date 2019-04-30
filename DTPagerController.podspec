@@ -8,9 +8,9 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DTPagerController'
-  s.version          = '2.0.4'
+  s.version          = '3.0.0'
   s.summary          = 'A fully customizable container view controller to display a set of ViewControllers in a horizontal scroll view. Written in Swift.'
-  s.swift_version    = '4.2'
+  s.swift_version    = '5.0'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
