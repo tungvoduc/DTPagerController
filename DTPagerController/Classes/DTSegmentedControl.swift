@@ -11,34 +11,34 @@ import UIKit
 // Protocol
 // SegmentedControl
 public protocol DTSegmentedControlProtocol {
-    
+
     var selectedSegmentIndex: Int { get set }
-    
+
     func setTitle(_ title: String?, forSegmentAt segment: Int)
-    
+
     func setImage(_ image: UIImage?, forSegmentAt segment: Int)
     
     func setTitleTextAttributes(_ attributes: [NSAttributedString.Key : Any]?, for state: UIControl.State)
     
 }
 
-open class DTSegmentedControl: UISegmentedControl, DTSegmentedControlProtocol {
-    
+open class DTSegmentedControl: UISegmentedControl, DTSegmentedControlProtocol {    
+
     public override init(items: [Any]?) {
         super.init(items: items)
         commonInit()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
-    
+
     func commonInit() {
         tintColor = UIColor.clear
         setDividerImage(UIImage(), forLeftSegmentState: UIControl.State(), rightSegmentState: UIControl.State.selected, barMetrics: UIBarMetrics.default)
