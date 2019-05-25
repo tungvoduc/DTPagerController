@@ -1,0 +1,4 @@
+opt_in_rules: # some rules are only opt-in
+  - missing_docs
+included:
+  - Example

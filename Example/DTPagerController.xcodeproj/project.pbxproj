@@ -178,6 +178,7 @@
 				607FACCE1AFB9204008FA782 /* Resources */,
 				4E3C443BCDE39A401298361C /* [CP] Embed Pods Frameworks */,
 				7D2E956EDD8BF9C0E39DA315 /* [CP] Copy Pods Resources */,
+				EBFDC30B2299C7CC0000C8E4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -226,7 +227,6 @@
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = YEA93CRG3C;
 						LastSwiftMigration = 1020;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -378,6 +378,23 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		EBFDC30B2299C7CC0000C8E4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -576,7 +593,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 418E814A46AAF58F28165FCC /* Pods-DTPagerController_Tests.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = YEA93CRG3C;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -588,6 +605,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DTPagerController_Example.app/DTPagerController_Example";
 			};
 			name = Debug;
 		};
@@ -595,7 +613,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 55A7573D2D2445F27EA2D53B /* Pods-DTPagerController_Tests.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = YEA93CRG3C;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -603,6 +621,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DTPagerController_Example.app/DTPagerController_Example";
 			};
 			name = Release;
 		};
