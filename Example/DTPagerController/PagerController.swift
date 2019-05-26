@@ -6,11 +6,10 @@
 //  Copyright © 2017 CocoaPods. All rights reserved.
 //
 
-import UIKit
 import DTPagerController
+import UIKit
 
 class PagerController: DTPagerController {
-
     init() {
         super.init(viewControllers: [])
         title = "View Controller"
@@ -38,9 +37,8 @@ class PagerController: DTPagerController {
         viewController3.scrollView.backgroundColor = UIColor.red
 
         viewControllers = [viewController1, viewController2, viewController3]
-        scrollIndicator.layer.cornerRadius = scrollIndicator.frame.height/2
+        scrollIndicator.layer.cornerRadius = scrollIndicator.frame.height / 2
 
         setSelectedPageIndex(1, animated: false)
     }
-
 }

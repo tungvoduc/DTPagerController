@@ -6,12 +6,11 @@
 //  Copyright (c) 2017 tungvoduc. All rights reserved.
 //
 
-import UIKit
 import DTPagerController
+import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
 
     // swiftlint:disable line_length
@@ -30,5 +29,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
-
 }

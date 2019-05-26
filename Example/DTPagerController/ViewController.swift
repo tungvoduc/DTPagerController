@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     let scrollView = UIScrollView()
+
     lazy var button: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
         button.backgroundColor = UIColor.black
@@ -24,11 +25,6 @@ class ViewController: UIViewController {
         view.addSubview(button)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -38,12 +34,13 @@ class ViewController: UIViewController {
         let buttonHeight: CGFloat = 50
         let buttonWidth: CGFloat = 100
         // swiftlint:disable line_length
-        button.frame = CGRect(x: (view.bounds.width - buttonWidth)/2, y: (view.bounds.height - buttonHeight)/2, width: buttonWidth, height: buttonHeight)
+        button.frame = CGRect(x: (view.bounds.width - buttonWidth) / 2, y: (view.bounds.height - buttonHeight) / 2, width: buttonWidth, height: buttonHeight)
         // swiftlint:enable line_length
-        button.layer.cornerRadius = buttonHeight/2
+        button.layer.cornerRadius = buttonHeight / 2
     }
 
-    @objc func buttonTapped() {
+    @objc
+    func buttonTapped() {
         if pagerController is PagerController {
             let pagerController = PagerController()
             navigationController?.pushViewController(pagerController, animated: true)
