@@ -6,18 +6,18 @@
 
 This is a control for iOS written in Swift. DTPagerController is simple to use and easy to customize. 
 
-## Screenshot
+## Screenshots
 
-* **Default segmented control**
+**Default segmented control**
 
 <p align="left" >
-  <img src="Screenshot.PNG" title="Default segmented control" width = "320">
+  <img src="Screenshots/Default.png" title="Default segmented control" width = "320">
 </p> 
 
 
-* **Custom segmented control**
+**Custom segmented control**
 <p align="left" >
-  <img src="Screenshot2.png" title="Custom segmented control" width = "320">
+  <img src="Screenshots/Custom.png" title="Custom segmented control" width = "320">
 </p> 
 
 ## Usage

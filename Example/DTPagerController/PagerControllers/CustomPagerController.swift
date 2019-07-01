@@ -12,23 +12,26 @@ import UIKit
 
 class CustomPagerController: DTPagerController {
     init() {
-        let viewController1 = ViewController()
-        viewController1.scrollView.backgroundColor = UIColor.green
+        let viewController1 = CityListViewController(cellType: .light)
+        viewController1.title = "One"
 
-        let viewController2 = ViewController()
-        viewController2.scrollView.backgroundColor = UIColor.purple
+        let viewController2 = CityListViewController(cellType: .dark)
+        viewController2.title = "Two"
 
-        let viewController3 = ViewController()
-        viewController3.scrollView.backgroundColor = UIColor.red
+        let viewController3 = CityListViewController(cellType: .light)
+        viewController3.title = "Three"
 
         // swiftlint:disable line_length
-        if let segmentedControl = HMSegmentedControl(sectionTitles: ["View controller 1", "A very loooooooooong title", "View controller 3"]) {
-            super.init(viewControllers: [viewController1, viewController2, viewController3], pageSegmentedControl: segmentedControl)
-            title = "CustomPagerController"
+        guard let segmentedControl = HMSegmentedControl(sectionTitles: ["Cities", "So many cities", "Many many many .......... cities"]) else {
+            fatalError("HMSegmentedControl cannot be created")
         }
+
+        segmentedControl.segmentWidthStyle = .dynamic
+        segmentedControl.segmentEdgeInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
+        super.init(viewControllers: [viewController1, viewController2, viewController3], pageSegmentedControl: segmentedControl)
         // swiftlint:enable line_length
 
-        fatalError("HMSegmentedControl cannot be created")
+        title = "CustomPagerController"
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="KGk-i7-Jjw" customClass="CityTableViewCell" customModule="DTLayOverController_Example" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="400" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="400" height="79.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RKP-57-Jcj">
+                        <rect key="frame" x="10" y="10.5" width="80" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="RKP-57-Jcj" secondAttribute="height" multiplier="4:3" id="VXs-vK-GnA"/>
+                            <constraint firstAttribute="width" constant="80" id="zUU-Aa-TSY"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oty-pV-q6Y">
+                        <rect key="frame" x="98" y="30" width="282" height="20.5"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="RKP-57-Jcj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="6yf-k7-oy6"/>
+                    <constraint firstItem="RKP-57-Jcj" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="BLV-ie-U7E"/>
+                    <constraint firstItem="oty-pV-q6Y" firstAttribute="centerY" secondItem="RKP-57-Jcj" secondAttribute="centerY" id="K8W-5U-mvw"/>
+                    <constraint firstAttribute="trailing" secondItem="oty-pV-q6Y" secondAttribute="trailing" constant="20" id="QzT-4F-5rx"/>
+                    <constraint firstItem="RKP-57-Jcj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="lss-oo-Buj"/>
+                    <constraint firstItem="oty-pV-q6Y" firstAttribute="leading" secondItem="RKP-57-Jcj" secondAttribute="trailing" constant="8" id="xto-tG-uW0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="cityImageView" destination="RKP-57-Jcj" id="L3A-W9-Dqu"/>
+                <outlet property="cityNameLabel" destination="oty-pV-q6Y" id="q3s-Ws-ZU3"/>
+            </connections>
+            <point key="canvasLocation" x="124.6376811594203" y="11.383928571428571"/>
+        </tableViewCell>
+    </objects>
+</document>

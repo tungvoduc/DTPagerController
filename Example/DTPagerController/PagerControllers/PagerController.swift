@@ -12,7 +12,7 @@ import UIKit
 class PagerController: DTPagerController {
     init() {
         super.init(viewControllers: [])
-        title = "View Controller"
+        title = "PagerController"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -24,21 +24,26 @@ class PagerController: DTPagerController {
 
         perferredScrollIndicatorHeight = 4
 
-        let viewController1 = ViewController()
+        let viewController1 = CityListViewController(cellType: .light)
         viewController1.title = "One"
-        viewController1.scrollView.backgroundColor = UIColor.green
 
-        let viewController2 = ViewController()
+        let viewController2 = CityListViewController(cellType: .dark)
         viewController2.title = "Two"
-        viewController2.scrollView.backgroundColor = UIColor.purple
 
-        let viewController3 = ViewController()
+        let viewController3 = CityListViewController(cellType: .light)
         viewController3.title = "Three"
-        viewController3.scrollView.backgroundColor = UIColor.red
 
         viewControllers = [viewController1, viewController2, viewController3]
         scrollIndicator.layer.cornerRadius = scrollIndicator.frame.height / 2
 
         setSelectedPageIndex(1, animated: false)
+
+        pageSegmentedControl.backgroundColor = .white
+        pageSegmentedControl.layer.masksToBounds = false
+        pageSegmentedControl.layer.shadowColor = UIColor.lightGray.cgColor
+        pageSegmentedControl.layer.shadowOffset = CGSize(width: 0, height: 1)
+        pageSegmentedControl.layer.shadowRadius = 1
+        pageSegmentedControl.layer.shadowOpacity = 0.5
     }
+
 }

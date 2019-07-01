@@ -9,14 +9,19 @@
 /* Begin PBXBuildFile section */
 		5CEB621AB7D0BF1C8B913049 /* Pods_DTPagerController_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAC090D8E662DE76A307CBCA /* Pods_DTPagerController_Tests.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
-		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
 		65CA6DD9EB5F73013195BC2C /* Pods_DTPagerController_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F0A1867E00BCDEB12A4D0 /* Pods_DTPagerController_Example.framework */; };
 		84304BD52042E60D00024829 /* CustomPagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84304BD42042E60D00024829 /* CustomPagerController.swift */; };
 		844E8D121F746130008E3D0E /* PagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E8D111F746130008E3D0E /* PagerController.swift */; };
+		EB00B74222CA8C4200CA18DF /* CityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB00B73F22CA8C4200CA18DF /* CityDetailViewController.swift */; };
+		EB00B74322CA8C4200CA18DF /* CityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB00B74022CA8C4200CA18DF /* CityListViewController.swift */; };
+		EB00B74422CA8C4200CA18DF /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB00B74122CA8C4200CA18DF /* City.swift */; };
+		EB00B74A22CA8C5900CA18DF /* AlternativeCityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB00B74622CA8C5900CA18DF /* AlternativeCityTableViewCell.swift */; };
+		EB00B74B22CA8C5900CA18DF /* AlternativeCityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB00B74722CA8C5900CA18DF /* AlternativeCityTableViewCell.xib */; };
+		EB00B74C22CA8C5900CA18DF /* CityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB00B74822CA8C5900CA18DF /* CityTableViewCell.swift */; };
+		EB00B74D22CA8C5900CA18DF /* CityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB00B74922CA8C5900CA18DF /* CityTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +44,6 @@
 		607FACD01AFB9204008FA782 /* DTPagerController_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTPagerController_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		607FACD71AFB9204008FA782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		607FACE51AFB9204008FA782 /* DTPagerController_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DTPagerController_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +54,13 @@
 		891C5D48E7A5A6F768621992 /* DTPagerController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = DTPagerController.podspec; path = ../DTPagerController.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BAC090D8E662DE76A307CBCA /* Pods_DTPagerController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DTPagerController_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9BC0D234017E369322CDD84 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		EB00B73F22CA8C4200CA18DF /* CityDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityDetailViewController.swift; sourceTree = "<group>"; };
+		EB00B74022CA8C4200CA18DF /* CityListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityListViewController.swift; sourceTree = "<group>"; };
+		EB00B74122CA8C4200CA18DF /* City.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		EB00B74622CA8C5900CA18DF /* AlternativeCityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlternativeCityTableViewCell.swift; sourceTree = "<group>"; };
+		EB00B74722CA8C5900CA18DF /* AlternativeCityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlternativeCityTableViewCell.xib; sourceTree = "<group>"; };
+		EB00B74822CA8C5900CA18DF /* CityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityTableViewCell.swift; sourceTree = "<group>"; };
+		EB00B74922CA8C5900CA18DF /* CityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CityTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,11 +107,9 @@
 		607FACD21AFB9204008FA782 /* Example for DTPagerController */ = {
 			isa = PBXGroup;
 			children = (
+				EB00B74E22CA97D400CA18DF /* PagerControllers */,
+				EB00B73E22CA8C3400CA18DF /* City */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
-				844E8D111F746130008E3D0E /* PagerController.swift */,
-				84304BD42042E60D00024829 /* CustomPagerController.swift */,
-				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -154,6 +162,37 @@
 				55A7573D2D2445F27EA2D53B /* Pods-DTPagerController_Tests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		EB00B73E22CA8C3400CA18DF /* City */ = {
+			isa = PBXGroup;
+			children = (
+				EB00B74522CA8C4800CA18DF /* Cells */,
+				EB00B74122CA8C4200CA18DF /* City.swift */,
+				EB00B73F22CA8C4200CA18DF /* CityDetailViewController.swift */,
+				EB00B74022CA8C4200CA18DF /* CityListViewController.swift */,
+			);
+			path = City;
+			sourceTree = "<group>";
+		};
+		EB00B74522CA8C4800CA18DF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				EB00B74622CA8C5900CA18DF /* AlternativeCityTableViewCell.swift */,
+				EB00B74722CA8C5900CA18DF /* AlternativeCityTableViewCell.xib */,
+				EB00B74822CA8C5900CA18DF /* CityTableViewCell.swift */,
+				EB00B74922CA8C5900CA18DF /* CityTableViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		EB00B74E22CA97D400CA18DF /* PagerControllers */ = {
+			isa = PBXGroup;
+			children = (
+				844E8D111F746130008E3D0E /* PagerController.swift */,
+				84304BD42042E60D00024829 /* CustomPagerController.swift */,
+			);
+			path = PagerControllers;
 			sourceTree = "<group>";
 		};
 		EF460106B15981690BCA867D /* Frameworks */ = {
@@ -257,7 +296,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				EB00B74D22CA8C5900CA18DF /* CityTableViewCell.xib in Resources */,
+				EB00B74B22CA8C5900CA18DF /* AlternativeCityTableViewCell.xib in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -403,10 +443,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB00B74C22CA8C5900CA18DF /* CityTableViewCell.swift in Sources */,
+				EB00B74A22CA8C5900CA18DF /* AlternativeCityTableViewCell.swift in Sources */,
 				844E8D121F746130008E3D0E /* PagerController.swift in Sources */,
-				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				84304BD52042E60D00024829 /* CustomPagerController.swift in Sources */,
+				EB00B74222CA8C4200CA18DF /* CityDetailViewController.swift in Sources */,
+				EB00B74322CA8C4200CA18DF /* CityListViewController.swift in Sources */,
+				EB00B74422CA8C4200CA18DF /* City.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,14 +473,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		607FACD91AFB9204008FA782 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				607FACDA1AFB9204008FA782 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		607FACDE1AFB9204008FA782 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
