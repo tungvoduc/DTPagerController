@@ -141,9 +141,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ### iOS 9.0+
 
 ## Installation
-
-DTPagerController is available through [CocoaPods](https://cocoapods.org/pods/DTPagerController). To install
-it, simply add the following line to your Podfile:
+### CocoaPods
+Simply add the following line to your Podfile:
 
 
 For Swift 5:
@@ -160,6 +159,14 @@ For Swift 4.2:
 pod 'DTPagerController', '~> 2.0.4'
 ```
 
+### Swift package manager
+`DTPagerController` is available for SPM from version `3.0.2`.
+Add the following to the dependencies of your `Package.swift`:
+
+```swift
+.package(url: "https://github.com/tungvoduc/DTPagerController", from: "version")
+```
+
 ## Author
 
 Tung Vo, tung98.dn@gmail.com
@@ -167,3 +174,7 @@ Tung Vo, tung98.dn@gmail.com
 ## License
 
 DTPagerController is available under the MIT license. See the LICENSE file for more info.
+
+## Feedbacks & requests
+- Open an issue if you find a bug, make a proposal or simply need some help.
+- You can also contact me via [email](mailto:tung98.dn@gmail.com).
