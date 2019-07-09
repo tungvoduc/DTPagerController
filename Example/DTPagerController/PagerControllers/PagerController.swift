@@ -34,10 +34,12 @@ class PagerController: DTPagerController {
         viewController3.title = "Three"
 
         viewControllers = [viewController1, viewController2, viewController3]
+        scrollIndicator.backgroundColor = UIColor.appDefault
         scrollIndicator.layer.cornerRadius = scrollIndicator.frame.height / 2
 
         setSelectedPageIndex(1, animated: false)
 
+        pageSegmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.appDefault], for: .selected)
         pageSegmentedControl.backgroundColor = .white
         pageSegmentedControl.layer.masksToBounds = false
         pageSegmentedControl.layer.shadowColor = UIColor.lightGray.cgColor

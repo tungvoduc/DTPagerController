@@ -25,13 +25,21 @@ class CustomPagerController: DTPagerController {
         guard let segmentedControl = HMSegmentedControl(sectionTitles: ["Cities", "So many cities", "Many many many .......... cities"]) else {
             fatalError("HMSegmentedControl cannot be created")
         }
-
-        segmentedControl.segmentWidthStyle = .dynamic
-        segmentedControl.segmentEdgeInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         super.init(viewControllers: [viewController1, viewController2, viewController3], pageSegmentedControl: segmentedControl)
         // swiftlint:enable line_length
 
         title = "CustomPagerController"
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        if let segmentedControl = pageSegmentedControl as? HMSegmentedControl {
+            segmentedControl.segmentWidthStyle = .dynamic
+            segmentedControl.segmentEdgeInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
+            segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.appDefault], for: .selected)
+            segmentedControl.selectionIndicatorColor = UIColor.appDefault
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
