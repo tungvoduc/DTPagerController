@@ -239,6 +239,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         performUpdate(with: selectedPageIndex, previousPageIndex: previousPageIndex, animated: animated)
     }
 
+    public var numberOfPages: Int { return viewControllers.count }
+
     // Update selected tab
     private func performUpdate(with selectedPageIndex: Int, previousPageIndex: Int, animated: Bool = true) {
         if selectedPageIndex != previousPageIndex {
@@ -259,12 +261,10 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                 addChild(newViewController)
             }
 
-            let size = view.bounds.size
-            let contentOffset = CGFloat(selectedPageIndex) * size.width
             let animationDuration = animated ? 0.5 : 0.0
 
             UIView.animate(withDuration: animationDuration, delay: 0, usingSpringWithDamping: 1.5, initialSpringVelocity: 5, options: UIView.AnimationOptions.curveEaseIn, animations: { () -> Void in
-                self.pageScrollView.contentOffset = CGPoint(x: contentOffset, y: 0)
+                self.pageScrollView.contentOffset = self.contentOffset(forSegmentedIndex: selectedPageIndex, withScrollViewWidth: self.pageScrollView.frame.width, numberOfPages: self.numberOfPages)
 
                 // Update status bar
                 self.setNeedsStatusBarAppearanceUpdate()
@@ -324,14 +324,14 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             // Set up segmented control
             setUpSegmentedControl(viewControllers: viewControllers)
 
-            let indexes = self.visiblePageIndexes()
+            let indices = pageScrollView.visiblePageIndices()
 
             // Then add subview, we do this later to prevent viewDidLoad of child view controllers to be called before page segment is allocated.
             for (index, viewController) in viewControllers.enumerated() {
                 // Add view controller's view if it must be visible in scroll view
-                if let _ = indexes.firstIndex(of: index) {
+                if let _ = indices.firstIndex(of: index) {
                     // Add to call viewDidLoad if needed
-                    viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
+                    viewController.view.frame = frameForChildViewController(at: index, numberOfPages: numberOfPages)
                     pageScrollView.addSubview(viewController.view)
 
                     // This will call viewWillAppear
@@ -422,11 +422,11 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         delegate?.pagerController?(self, pageScrollViewDidScroll: scrollView)
 
         // Add child view controller's view if needed
-        let indexes = self.visiblePageIndexes()
+        let indices = pageScrollView.visiblePageIndices()
 
-        for index in indexes {
+        for index in indices {
             let viewController = viewControllers[index]
-            viewController.view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: view.bounds.width, height: view.bounds.height - segmentedControlHeight)
+            viewController.view.frame = frameForChildViewController(at: index, numberOfPages: numberOfPages)
             pageScrollView.addSubview(viewController.view)
         }
 
@@ -436,17 +436,40 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         // Update bar position
         updateScrollIndicatorHorizontalPosition(with: scrollView)
 
-        // When content offset changes, check if it is closer to the next page
-        var index: Int = 0
-        if scrollView.contentOffset.x == 0 && scrollView.frame.size.width == 0 {
-            index = 0
-        } else {
-            index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
-        }
+        let index = segmentIndex(from: scrollView)
 
         // Update segmented selected state only
         if pageSegmentedControl.selectedSegmentIndex != index {
             pageSegmentedControl.selectedSegmentIndex = index
+        }
+    }
+
+    private func frameForChildViewController(at index: Int, numberOfPages: Int) -> CGRect {
+        let offset = contentOffset(forSegmentedIndex: index, withScrollViewWidth: pageScrollView.frame.width, numberOfPages: numberOfPages)
+        return CGRect(x: offset.x, y: 0, width: pageScrollView.frame.width, height: pageScrollView.frame.height)
+    }
+
+    private func segmentIndex(from scrollView: UIScrollView) -> Int {
+        if scrollView.frame.size.width == 0 {
+            return 0
+        } else {
+            if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .rightToLeft {
+                // The view is shown in right-to-left mode right now.
+                return Int(round((scrollView.contentSize.width - scrollView.frame.width - scrollView.contentOffset.x) / scrollView.frame.size.width))
+            } else {
+                return Int(round(scrollView.contentOffset.x / scrollView.frame.width))
+            }
+        }
+    }
+
+    private func contentOffset(forSegmentedIndex index: Int, withScrollViewWidth width: CGFloat, numberOfPages: Int) -> CGPoint {
+        assert(index < numberOfPages, "Page index must be smaller than number of pages.")
+        if width == 0 || index >= numberOfPages { return .zero }
+
+        if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .rightToLeft {
+            return CGPoint(x: width * CGFloat(numberOfPages - index - 1), y: 0)
+        } else {
+            return CGPoint(x: width * CGFloat(index), y: 0)
         }
     }
 
@@ -466,14 +489,12 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
 
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
-        selectedPageIndex = index
+        selectedPageIndex = segmentIndex(from: scrollView)
     }
 
     open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            let index = Int(round(scrollView.contentOffset.x / scrollView.frame.size.width))
-            selectedPageIndex = index
+            selectedPageIndex = segmentIndex(from: scrollView)
         }
     }
 
@@ -489,30 +510,6 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                 }
             }
         }
-    }
-
-    // Return page indexes that are visible
-    private func visiblePageIndexes() -> [Int] {
-        guard pageScrollView.bounds.width > 0, viewControllers.count > 0 else {
-            return []
-        }
-
-        let offsetRatio = pageScrollView.contentOffset.x / pageScrollView.bounds.width
-
-        if offsetRatio <= 0 {
-            return [0]
-        } else if offsetRatio >= CGFloat(viewControllers.count - 1) {
-            return [viewControllers.count - 1]
-        }
-
-        let floorValue = Int(floor(offsetRatio))
-        let ceilingValue = Int(ceil(offsetRatio))
-
-        if floorValue == ceilingValue {
-            return [floorValue]
-        }
-
-        return [floorValue, ceilingValue]
     }
 
     // MARK: Segmented control setup
@@ -545,4 +542,36 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         }
     }
 
+}
+
+extension UIScrollView {
+    // Return page indices that are visible
+    func visiblePageIndices() -> [Int] {
+        guard frame.width > 0 else { return [] }
+        let numberOfPages = Int(ceil(contentSize.width / frame.width))
+        guard numberOfPages > 0 else { return [] }
+
+        let offsetRatio: CGFloat
+
+        if UIView.userInterfaceLayoutDirection(for: semanticContentAttribute) == .rightToLeft {
+            offsetRatio = (contentSize.width - frame.width - contentOffset.x) / bounds.width
+        } else {
+            offsetRatio = contentOffset.x / bounds.width
+        }
+
+        if offsetRatio <= 0 {
+            return [0]
+        } else if offsetRatio >= CGFloat(numberOfPages - 1) {
+            return [numberOfPages - 1]
+        }
+
+        let floorValue = Int(floor(offsetRatio))
+        let ceilingValue = Int(ceil(offsetRatio))
+
+        if floorValue == ceilingValue {
+            return [floorValue]
+        }
+
+        return [floorValue, ceilingValue]
+    }
 }
