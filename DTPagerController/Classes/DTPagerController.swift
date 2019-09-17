@@ -42,7 +42,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Height of segmented control bar
     /// Get only
     open var segmentedControlHeight: CGFloat {
-        return viewControllers.count <= 1 ? 0 : preferredSegmentedControlHeight
+        return numberOfPages <= 1 ? 0 : preferredSegmentedControlHeight
     }
 
     /// Preferred of scroll indicator.
@@ -59,7 +59,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Height of segmented indicator
     /// Get only
     open var scrollIndicatorHeight: CGFloat {
-        return viewControllers.count <= 1 ? 0 : perferredScrollIndicatorHeight
+        return numberOfPages <= 1 ? 0 : perferredScrollIndicatorHeight
     }
 
     var previousPageIndex: Int = 0
@@ -221,7 +221,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         // Update child view controllers' view frame
         for (index, viewController) in viewControllers.enumerated() {
             if let view = viewController.viewIfLoaded {
-                view.frame = CGRect(x: CGFloat(index) * view.bounds.width, y: 0, width: pageScrollView.bounds.width, height: pageScrollView.bounds.height)
+                view.frame = frameForChildViewController(at: index, numberOfPages: numberOfPages)
             }
         }
 
@@ -250,16 +250,14 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
             let oldViewController = viewControllers[previousPageIndex]
             let newViewController = viewControllers[selectedPageIndex]
 
-            if self.automaticallyHandleAppearanceTransitions {
+            if automaticallyHandleAppearanceTransitions {
                 oldViewController.beginAppearanceTransition(false, animated: true)
                 newViewController.beginAppearanceTransition(true, animated: true)
             }
 
             // Call these two methods to notify that two view controllers are being removed or added to container view controller (Check Documentation)
-            if automaticallyHandleAppearanceTransitions {
-                oldViewController.willMove(toParent: nil)
-                addChild(newViewController)
-            }
+            oldViewController.willMove(toParent: nil)
+            addChild(newViewController)
 
             let animationDuration = animated ? 0.5 : 0.0
 
@@ -275,11 +273,12 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                 self.delegate?.pagerController?(self, didChangeSelectedPageIndex: self.selectedPageIndex)
             })
 
+
+            oldViewController.removeFromParent()
+            newViewController.didMove(toParent: self)
+
             // Call these two methods to notify that two view controllers are already removed or added to container view controller (Check Documentation)
             if automaticallyHandleAppearanceTransitions {
-                oldViewController.removeFromParent()
-                newViewController.didMove(toParent: self)
-
                 oldViewController.endAppearanceTransition()
                 newViewController.endAppearanceTransition()
             }
@@ -331,8 +330,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
                 // Add view controller's view if it must be visible in scroll view
                 if let _ = indices.firstIndex(of: index) {
                     // Add to call viewDidLoad if needed
-                    viewController.view.frame = frameForChildViewController(at: index, numberOfPages: numberOfPages)
                     pageScrollView.addSubview(viewController.view)
+                    viewController.view.frame = frameForChildViewController(at: index, numberOfPages: numberOfPages)
 
                     // This will call viewWillAppear
                     addChild(viewController)
@@ -362,8 +361,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
         // We need to save the value of selectedPageIndex and update pageScrollView's horizontal content offset correctly.
         let index = selectedPageIndex
         pageScrollView.frame = CGRect(x: 0, y: segmentedControlHeight, width: size.width, height: size.height - segmentedControlHeight)
-        pageScrollView.contentSize = CGSize(width: pageScrollView.frame.width * CGFloat(viewControllers.count), height: 0)
-        pageScrollView.contentOffset.x = pageScrollView.frame.width * CGFloat(index)
+        pageScrollView.contentSize = CGSize(width: pageScrollView.frame.width * CGFloat(numberOfPages), height: 0)
+        pageScrollView.contentOffset = contentOffset(forSegmentedIndex: index, withScrollViewWidth: pageScrollView.frame.width, numberOfPages: numberOfPages)
     }
 
     /// Setup pageSegmentedControl
@@ -395,8 +394,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
 
     open func setUpScrollIndicator() {
-        if viewControllers.count > 0 {
-            scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(viewControllers.count), height: scrollIndicatorHeight)
+        if numberOfPages > 0 {
+            scrollIndicator.frame.size = CGSize(width: view.bounds.width/CGFloat(numberOfPages), height: scrollIndicatorHeight)
         }
 
         scrollIndicator.frame.origin.y = segmentedControlHeight - scrollIndicatorHeight
@@ -450,12 +449,12 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
 
     private func segmentIndex(from scrollView: UIScrollView) -> Int {
-        if scrollView.frame.size.width == 0 {
+        if scrollView.frame.width == 0 {
             return 0
         } else {
             if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .rightToLeft {
                 // The view is shown in right-to-left mode right now.
-                return Int(round((scrollView.contentSize.width - scrollView.frame.width - scrollView.contentOffset.x) / scrollView.frame.size.width))
+                return Int(round((scrollView.contentSize.width - scrollView.frame.width - scrollView.contentOffset.x) / scrollView.frame.width))
             } else {
                 return Int(round(scrollView.contentOffset.x / scrollView.frame.width))
             }
@@ -463,6 +462,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     }
 
     private func contentOffset(forSegmentedIndex index: Int, withScrollViewWidth width: CGFloat, numberOfPages: Int) -> CGPoint {
+        if numberOfPages == 0 { return .zero }
         assert(index < numberOfPages, "Page index must be smaller than number of pages.")
         if width == 0 || index >= numberOfPages { return .zero }
 
@@ -482,9 +482,8 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
 
     /// Update scroll indicator with offset ratio
     open func updateScrollIndicator(with offsetRatio: CGFloat, scrollView: UIScrollView) {
-        // let itemWidth = scrollView.frame.width/CGFloat(viewControllers.count)
-        if viewControllers.count > 0 {
-            scrollIndicator.center.x = (offsetRatio + 1 / (CGFloat(viewControllers.count) * 2 )) * scrollView.frame.width
+        if numberOfPages > 0 {
+            scrollIndicator.center.x = (offsetRatio + 1 / (CGFloat(numberOfPages) * 2 )) * scrollView.frame.width
         }
     }
 
