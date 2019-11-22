@@ -40,9 +40,16 @@ open class DTSegmentedControl: UISegmentedControl, DTSegmentedControlProtocol {
     }
 
     func commonInit() {
-        tintColor = UIColor.clear
+        setTintColor(.clear)
         setDividerImage(UIImage(), forLeftSegmentState: UIControl.State(), rightSegmentState: UIControl.State.selected, barMetrics: UIBarMetrics.default)
         setDividerImage(UIImage(), forLeftSegmentState: UIControl.State.selected, rightSegmentState: UIControl.State(), barMetrics: UIBarMetrics.default)
     }
-
+    
+    func setTintColor(_ color: UIColor) {
+        if #available(iOS 13.0, *) {
+            selectedSegmentTintColor = color
+        } else {
+            tintColor = color
+        }
+    }
 }
