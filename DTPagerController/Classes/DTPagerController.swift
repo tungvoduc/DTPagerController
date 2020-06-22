@@ -42,7 +42,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Height of segmented control bar
     /// Get only
     open var segmentedControlHeight: CGFloat {
-        return numberOfPages <= 1 ? 0 : preferredSegmentedControlHeight
+        return numberOfPages < 1 ? 0 : preferredSegmentedControlHeight
     }
 
     /// Preferred of scroll indicator.
@@ -59,7 +59,7 @@ open class DTPagerController: UIViewController, UIScrollViewDelegate {
     /// Height of segmented indicator
     /// Get only
     open var scrollIndicatorHeight: CGFloat {
-        return numberOfPages <= 1 ? 0 : perferredScrollIndicatorHeight
+        return numberOfPages < 1 ? 0 : perferredScrollIndicatorHeight
     }
 
     var previousPageIndex: Int = 0
