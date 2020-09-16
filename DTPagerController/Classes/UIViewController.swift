@@ -5,7 +5,7 @@
 //  Created by tungvoduc on 25/02/2018.
 //
 
-import Foundation
+import UIKit
 
 public extension UIViewController {
     var pagerController: DTPagerController? {
